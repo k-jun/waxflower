@@ -47,13 +47,13 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
-          example: 10
+          type: string
+          format: uuid
+          example: a79b47aa-301b-3221-a323-5e63601b9615
         place:
           type: integer
           format: int64
-          example: 10
+          example: 5000
         user:
           $ref: '#/components/schemas/User'
         game:
@@ -64,30 +64,43 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
-          example: 10
+          type: string
+          format: uuid
+          example: e241f57c-0521-3caf-82ac-c1295eb32ac8
         name:
           type: string
-          example: k-jun
+          format: email
+          example: brandonnichols@example.net
     Game:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
-          example: 10
+          type: string
+          format: uuid
+          example: 94518720-e444-4b18-b6f7-34d8af654a5
         date:
           type: string
+          format: date
+          example: 1999-07-10
         time:
           type: string
+          format: date
+          example: 13:45:00
     Seat:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
-          example: 10
+          type: string
+          format: uuid
+          example: db10fba1-c46e-4712-a8c7-cc0991df54f4
         gate:
           type: integer
-          example: 10
+          example: 9
+        col:
+          type: integer
+          example: 57
+        row:
+          type: string
+          pattern: '^[A-Z]$'
+          example: A
+
