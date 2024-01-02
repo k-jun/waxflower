@@ -8,6 +8,8 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 0.1.0
 tags:
+  - name: main
+    description: What is essential is usually invisible to the eye
   - name: ticket
     description: Everything about ticket
   - name: user
@@ -17,12 +19,51 @@ tags:
   - name: seat
     description: Everything about seat
 paths:
-  /tickets:
+  /ticket:
     post:
       tags:
         - ticket
       requestBody:
-        description: Update an existent pet in the store
+        $ref: '#/components/requestBodies/Ticket'
+      responses:
+        '200':
+          description: Successful operation
+    get:
+      tags:
+        - ticket
+      responses:
+        '200':
+          description: Successful operation
+    put:
+      tags:
+        - ticket
+      responses:
+        '200':
+          description: Successful operation
+    delete:
+      tags:
+        - ticket
+      responses:
+        '200':
+          description: Successful operation
+  /a:
+    get:
+      tags:
+        - main
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: ID not found
+        '405':
+          description: Validation exception
+  /b:
+    post:
+      tags:
+        - main
+      requestBody:
         content:
           application/json:
             schema:
@@ -31,14 +72,29 @@ paths:
       responses:
         '200':
           description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ticket'
         '400':
           description: Invalid ID supplied
         '404':
-          description: Pet not found
+          description: ID not found
+        '405':
+          description: Validation exception
+  /c:
+    post:
+      tags:
+        - main
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ticket'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: ID not found
         '405':
           description: Validation exception
 components:
@@ -101,6 +157,13 @@ components:
           example: 57
         row:
           type: string
-          pattern: '^[A-Z]$'
+          pattern: '^[A-Z][A-Z]$'
           example: A
-
+  requestBodies:
+    Ticket:
+      description: A JSON object containing ticket information
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ticket'
