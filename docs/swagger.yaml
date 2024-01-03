@@ -26,77 +26,53 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/Ticket'
       responses:
-        '200':
-          description: Successful operation
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
+        409:
+          $ref: "#/components/responses/409"
+  /ticket/{ticketId}:
     get:
       tags:
         - ticket
+      parameters:
+        - in: path
+          name: ticketId
+          schema:
+            type: string
+            format: uuid
+            example: 2a024d5f-8dbf-4cf3-937c-0ec3307ba65c
+          required: true
       responses:
-        '200':
-          description: Successful operation
+        200:
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+        404:
+          $ref: "#/components/responses/404"
     put:
       tags:
         - ticket
-      responses:
-        '200':
-          description: Successful operation
-    delete:
-      tags:
-        - ticket
-      responses:
-        '200':
-          description: Successful operation
-  /a:
-    get:
-      tags:
-        - main
-      responses:
-        '200':
-          description: Successful operation
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: ID not found
-        '405':
-          description: Validation exception
-  /b:
-    post:
-      tags:
-        - main
+      parameters:
+        - in: path
+          name: ticketId
+          schema:
+            type: string
+            format: uuid
+            example: 630fbf83-0439-4105-82d8-6318e48db075
+          required: true
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Ticket'
-        required: true
+        $ref: '#/components/requestBodies/Ticket'
       responses:
-        '200':
-          description: Successful operation
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: ID not found
-        '405':
-          description: Validation exception
-  /c:
-    post:
-      tags:
-        - main
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Ticket'
-        required: true
-      responses:
-        '200':
-          description: Successful operation
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: ID not found
-        '405':
-          description: Validation exception
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          $ref: "#/components/responses/404"
 components:
   schemas:
     Ticket:
@@ -167,3 +143,16 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Ticket'
+  responses:
+    200:
+      description: OK
+    400:
+      description: Bad request
+    404:
+      description: Not Found
+    409:
+      description: Conflict
+    500:
+      description: Unexpected Error
+
+
