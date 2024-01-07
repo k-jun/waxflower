@@ -159,7 +159,7 @@ func (db *MemoryDB) UpdateSeat(s *Seat) (*Seat, error) {
 func (db *MemoryDB) DeleteSeat(s *Seat) (*Seat, error) {
 	db.rw.Lock()
 	defer db.rw.Unlock()
-	if _, ok := db.users[s.Id]; !ok {
+	if _, ok := db.seats[s.Id]; !ok {
 		return nil, ErrNotFound
 	}
 	delete(db.seats, s.Id)
