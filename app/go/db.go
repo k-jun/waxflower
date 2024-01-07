@@ -23,22 +23,27 @@ type UserDB struct {
 }
 
 func NewUserDB() IUserDB {
-	return &UserDB{}
+	return &UserDB{
+		storage: map[string]User{},
+	}
 }
 
 func (db *UserDB) SelectUser(u *User) (*User, error) {
 	db.rw.RLock()
 	defer db.rw.RUnlock()
-	if v, ok := db.storage[u.Id]; ok {
-		return &v, nil
+	v, ok := db.storage[u.Id]
+	if !ok {
+		return nil, ErrNotFound
 	}
-	return nil, ErrNotFound
+	return &v, nil
+
 }
 
 func (db *UserDB) InsertUser(u *User) (*User, error) {
 	db.rw.Lock()
 	defer db.rw.Unlock()
-	if _, ok := db.storage[u.Id]; !ok {
+	_, ok := db.storage[u.Id]
+	if ok {
 		return nil, ErrAlreadyExist
 	}
 	db.storage[u.Id] = *u
@@ -48,11 +53,12 @@ func (db *UserDB) InsertUser(u *User) (*User, error) {
 func (db *UserDB) UpdateUser(u *User) (*User, error) {
 	db.rw.Lock()
 	defer db.rw.Unlock()
-	if _, ok := db.storage[u.Id]; ok {
-		db.storage[u.Id] = *u
-		return u, nil
+	_, ok := db.storage[u.Id]
+	if !ok {
+		return nil, ErrNotFound
 	}
-	return nil, ErrNotFound
+	db.storage[u.Id] = *u
+	return u, nil
 }
 
 func (db *UserDB) DeleteUser(u *User) (*User, error) {
