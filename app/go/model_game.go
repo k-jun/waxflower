@@ -15,15 +15,26 @@ package openapi
 
 type Game struct {
 
-	Id string `json:"id,omitempty"`
+	Id string `json:"id"`
 
-	Date string `json:"date,omitempty"`
+	Date string `json:"date"`
 
-	Time string `json:"time,omitempty"`
+	Time string `json:"time"`
 }
 
 // AssertGameRequired checks if the required fields are not zero-ed
 func AssertGameRequired(obj Game) error {
+	elements := map[string]interface{}{
+		"id": obj.Id,
+		"date": obj.Date,
+		"time": obj.Time,
+	}
+	for name, el := range elements {
+		if isZero := IsZeroValue(el); isZero {
+			return &RequiredError{Field: name}
+		}
+	}
+
 	return nil
 }
 
