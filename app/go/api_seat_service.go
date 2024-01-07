@@ -12,73 +12,53 @@ package openapi
 
 import (
 	"context"
-	"net/http"
-	"errors"
 )
 
 // SeatAPIService is a service that implements the logic for the SeatAPIServicer
 // This service should implement the business logic for every endpoint for the SeatAPI API.
 // Include any external packages or services that will be required by this service.
 type SeatAPIService struct {
+	db IDB
 }
 
 // NewSeatAPIService creates a default api service
-func NewSeatAPIService() SeatAPIServicer {
-	return &SeatAPIService{}
+func NewSeatAPIService(db IDB) SeatAPIServicer {
+	return &SeatAPIService{db}
 }
 
-// SeatsPost - 
+// SeatsPost -
 func (s *SeatAPIService) SeatsPost(ctx context.Context, seat Seat) (ImplResponse, error) {
-	// TODO - update SeatsPost with the required logic for this service method.
-	// Add api_seat_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
-	// return Response(200, nil),nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("SeatsPost method not implemented")
+	_, err := s.db.InsertSeat(&seat)
+	if err != nil {
+		return Response(400, nil), err
+	}
+	return Response(200, nil), nil
 }
 
-// SeatsSeatIdDelete - 
+// SeatsSeatIdDelete -
 func (s *SeatAPIService) SeatsSeatIdDelete(ctx context.Context, seatId string) (ImplResponse, error) {
-	// TODO - update SeatsSeatIdDelete with the required logic for this service method.
-	// Add api_seat_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
-	// return Response(200, nil),nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("SeatsSeatIdDelete method not implemented")
+	_, err := s.db.DeleteSeat(&Seat{Id: seatId})
+	if err != nil {
+		return Response(400, nil), err
+	}
+	return Response(200, nil), nil
 }
 
-// SeatsSeatIdGet - 
+// SeatsSeatIdGet -
 func (s *SeatAPIService) SeatsSeatIdGet(ctx context.Context, seatId string) (ImplResponse, error) {
-	// TODO - update SeatsSeatIdGet with the required logic for this service method.
-	// Add api_seat_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, Seat{}) or use other options such as http.Ok ...
-	// return Response(200, Seat{}), nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("SeatsSeatIdGet method not implemented")
+	x, err := s.db.SelectSeat(&Seat{Id: seatId})
+	if err != nil {
+		return Response(400, nil), err
+	}
+	return Response(200, x), nil
 }
 
-// SeatsSeatIdPut - 
+// SeatsSeatIdPut -
 func (s *SeatAPIService) SeatsSeatIdPut(ctx context.Context, seatId string, seat Seat) (ImplResponse, error) {
-	// TODO - update SeatsSeatIdPut with the required logic for this service method.
-	// Add api_seat_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, Seat{}) or use other options such as http.Ok ...
-	// return Response(200, Seat{}), nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("SeatsSeatIdPut method not implemented")
+	seat.Id = seatId
+	x, err := s.db.UpdateSeat(&seat)
+	if err != nil {
+		return Response(400, nil), err
+	}
+	return Response(200, x), nil
 }

@@ -26,6 +26,15 @@ func NewUserAPIService(userDB IDB) UserAPIServicer {
 	return &UserAPIService{userDB}
 }
 
+// UsersPost -
+func (s *UserAPIService) UsersPost(ctx context.Context, user User) (ImplResponse, error) {
+	_, err := s.db.InsertUser(&user)
+	if err != nil {
+		return Response(400, nil), err
+	}
+	return Response(200, nil), nil
+}
+
 // UsersUserIdDelete -
 func (s *UserAPIService) UsersUserIdDelete(ctx context.Context, userId string) (ImplResponse, error) {
 	_, err := s.db.DeleteUser(&User{Id: userId})
@@ -52,13 +61,4 @@ func (s *UserAPIService) UsersUserIdPut(ctx context.Context, userId string, user
 		return Response(400, nil), err
 	}
 	return Response(200, u), nil
-}
-
-// UsersPost -
-func (s *UserAPIService) UsersPost(ctx context.Context, user User) (ImplResponse, error) {
-	_, err := s.db.InsertUser(&user)
-	if err != nil {
-		return Response(400, nil), err
-	}
-	return Response(200, nil), nil
 }

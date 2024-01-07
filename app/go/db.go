@@ -19,11 +19,16 @@ type IDB interface {
 	InsertGame(*Game) (*Game, error)
 	UpdateGame(*Game) (*Game, error)
 	DeleteGame(*Game) (*Game, error)
+	SelectSeat(*Seat) (*Seat, error)
+	InsertSeat(*Seat) (*Seat, error)
+	UpdateSeat(*Seat) (*Seat, error)
+	DeleteSeat(*Seat) (*Seat, error)
 }
 
 type MemoryDB struct {
 	users map[string]User
 	games map[string]Game
+	seats map[string]Seat
 	rw    sync.RWMutex
 }
 
@@ -31,6 +36,7 @@ func NewMemoryDB() IDB {
 	return &MemoryDB{
 		users: map[string]User{},
 		games: map[string]Game{},
+		seats: map[string]Seat{},
 	}
 }
 
@@ -116,4 +122,46 @@ func (db *MemoryDB) DeleteGame(g *Game) (*Game, error) {
 	}
 	delete(db.games, g.Id)
 	return g, nil
+}
+
+func (db *MemoryDB) SelectSeat(s *Seat) (*Seat, error) {
+	db.rw.RLock()
+	defer db.rw.RUnlock()
+	v, ok := db.seats[s.Id]
+	if !ok {
+		return nil, ErrNotFound
+	}
+	return &v, nil
+}
+
+func (db *MemoryDB) InsertSeat(s *Seat) (*Seat, error) {
+	db.rw.Lock()
+	defer db.rw.Unlock()
+	_, ok := db.seats[s.Id]
+	if ok {
+		return nil, ErrAlreadyExist
+	}
+	db.seats[s.Id] = *s
+	return s, nil
+}
+
+func (db *MemoryDB) UpdateSeat(s *Seat) (*Seat, error) {
+	db.rw.Lock()
+	defer db.rw.Unlock()
+	_, ok := db.seats[s.Id]
+	if !ok {
+		return nil, ErrNotFound
+	}
+	db.seats[s.Id] = *s
+	return s, nil
+}
+
+func (db *MemoryDB) DeleteSeat(s *Seat) (*Seat, error) {
+	db.rw.Lock()
+	defer db.rw.Unlock()
+	if _, ok := db.users[s.Id]; !ok {
+		return nil, ErrNotFound
+	}
+	delete(db.seats, s.Id)
+	return s, nil
 }

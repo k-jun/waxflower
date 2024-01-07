@@ -27,7 +27,10 @@ func main() {
 	UserAPIService := openapi.NewUserAPIService(db)
 	UserAPIController := openapi.NewUserAPIController(UserAPIService)
 
-	router := openapi.NewRouter(GameAPIController, UserAPIController)
+	SeatAPIService := openapi.NewSeatAPIService(db)
+	SeatAPIController := openapi.NewSeatAPIController(SeatAPIService)
+
+	router := openapi.NewRouter(GameAPIController, UserAPIController, SeatAPIController)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

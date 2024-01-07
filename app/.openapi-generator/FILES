@@ -5,7 +5,6 @@ go.mod
 go/api.go
 go/api_game.go
 go/api_seat.go
-go/api_seat_service.go
 go/api_user.go
 go/error.go
 go/helpers.go

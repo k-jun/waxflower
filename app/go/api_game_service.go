@@ -26,6 +26,15 @@ func NewGameAPIService(db IDB) GameAPIServicer {
 	return &GameAPIService{db}
 }
 
+// GamesPost -
+func (s *GameAPIService) GamesPost(ctx context.Context, game Game) (ImplResponse, error) {
+	_, err := s.db.InsertGame(&game)
+	if err != nil {
+		return Response(400, nil), err
+	}
+	return Response(200, nil), nil
+}
+
 // GamesGameIdDelete -
 func (s *GameAPIService) GamesGameIdDelete(ctx context.Context, gameId string) (ImplResponse, error) {
 	_, err := s.db.DeleteGame(&Game{Id: gameId})
@@ -52,13 +61,4 @@ func (s *GameAPIService) GamesGameIdPut(ctx context.Context, gameId string, game
 		return Response(400, nil), err
 	}
 	return Response(200, g), nil
-}
-
-// GamesPost -
-func (s *GameAPIService) GamesPost(ctx context.Context, game Game) (ImplResponse, error) {
-	_, err := s.db.InsertGame(&game)
-	if err != nil {
-		return Response(400, nil), err
-	}
-	return Response(200, nil), nil
 }
