@@ -19,75 +19,7 @@ tags:
   - name: seat
     description: Everything about seat
 paths:
-  /ticket:
-    post:
-      tags:
-        - ticket
-      requestBody:
-        $ref: "#/components/requestBodies/Ticket"
-      responses:
-        200:
-          $ref: "#/components/responses/200"
-        400:
-          $ref: "#/components/responses/400"
-        409:
-          $ref: "#/components/responses/409"
-  /ticket/{ticketId}:
-    get:
-      tags:
-        - ticket
-      parameters:
-        - in: path
-          name: ticketId
-          schema:
-            type: string
-            format: uuid
-            example: 2a024d5f-8dbf-4cf3-937c-0ec3307ba65c
-          required: true
-      responses:
-        200:
-          $ref: "#/components/responses/200Ticket"
-        404:
-          $ref: "#/components/responses/404"
-    put:
-      tags:
-        - ticket
-      parameters:
-        - in: path
-          name: ticketId
-          schema:
-            type: string
-            format: uuid
-            example: 630fbf83-0439-4105-82d8-6318e48db075
-          required: true
-      requestBody:
-        $ref: '#/components/requestBodies/Ticket'
-      responses:
-        200:
-          $ref: "#/components/responses/200"
-        400:
-          $ref: "#/components/responses/400"
-        404:
-          $ref: "#/components/responses/404"
-    delete:
-      tags:
-        - ticket
-      parameters:
-        - in: path
-          name: ticketId
-          schema:
-            type: string
-            format: uuid
-            example: 871edb90-6fc6-460d-bd8c-7266539e35bf
-          required: true
-      responses:
-        200:
-          $ref: "#/components/responses/200"
-        400:
-          $ref: "#/components/responses/400"
-        404:
-          $ref: "#/components/responses/404"
-  /user:
+  /users:
     post:
       tags:
         - user
@@ -98,9 +30,9 @@ paths:
           $ref: "#/components/responses/200"
         400:
           $ref: "#/components/responses/400"
-        404:
-          $ref: "#/components/responses/409"
-  /user/{userId}:
+        500:
+          $ref: "#/components/responses/500"
+  /users/{userId}:
     get:
       tags:
         - user
@@ -117,8 +49,8 @@ paths:
           $ref: "#/components/responses/200User"
         400:
           $ref: "#/components/responses/400"
-        404:
-          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
     put:
       tags:
         - user
@@ -137,131 +69,15 @@ paths:
           $ref: "#/components/responses/200"
         400:
           $ref: "#/components/responses/400"
-  /game:
-    post:
-      tags:
-        - game
-      requestBody:
-        $ref: "#/components/requestBodies/Game"
-      responses:
-        200:
-          $ref: "#/components/responses/200"
-        400:
-          $ref: "#/components/responses/400"
-        404:
-          $ref: "#/components/responses/409"
-  /game/{gameId}:
-    get:
-      tags:
-        - game
-      parameters:
-        - in: path
-          name: gameId
-          schema:
-            type: string
-            format: uuid
-            example: 99c9ec79-042c-4885-81bc-1b4f5eb53d0f
-          required: true
-      responses:
-        200:
-          $ref: "#/components/responses/200Game"
-        400:
-          $ref: "#/components/responses/400"
-        404:
-          $ref: "#/components/responses/404"
-    put:
-      tags:
-        - game
-      parameters:
-        - in: path
-          name: gameId
-          schema:
-            type: string
-            format: uuid
-            example: 99c9ec79-042c-4885-81bc-1b4f5eb53d0f
-          required: true
-      requestBody:
-        $ref: "#/components/requestBodies/Game"
-      responses:
-        200:
-          $ref: "#/components/responses/200Game"
-        400:
-          $ref: "#/components/responses/400"
-        404:
-          $ref: "#/components/responses/404"
-  /seat:
-    post:
-      tags:
-        - seat
-      requestBody:
-        $ref: "#/components/requestBodies/Seat"
-      responses:
-        200:
-          $ref: "#/components/responses/200"
-        400:
-          $ref: "#/components/responses/400"
-        409:
-          $ref: "#/components/responses/409"
-  /seat/{seatId}:
-    get:
-      tags:
-        - seat
-      parameters:
-        - in: path
-          name: seatId
-          schema:
-            type: string
-            format: uuid
-            example: 34f90bdc-2210-4b18-b1d2-3d11499cde9b
-          required: true
-      responses:
-        200:
-          $ref: "#/components/responses/200Seat"
-        400:
-          $ref: "#/components/responses/400"
-        404:
-          $ref: "#/components/responses/404"
-    put:
-      tags:
-        - seat
-      parameters:
-        - in: path
-          name: seatId
-          schema:
-            type: string
-            format: uuid
-            example: 96ce32d7-d251-422a-9bb4-8b8b14fe71da
-          required: true
-      requestBody:
-        $ref: "#/components/requestBodies/Seat"
-      responses:
-        200:
-          $ref: "#/components/responses/200"
-        400:
-          $ref: "#/components/responses/400"
-        404:
-          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
 components:
   schemas:
-    Ticket:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: a79b47aa-301b-3221-a323-5e63601b9615
-        place:
-          type: integer
-          format: int64
-          example: 5000
-        user:
-          $ref: '#/components/schemas/User'
-        game:
-          $ref: '#/components/schemas/Game'
-        seat:
-          $ref: '#/components/schemas/Seat'
     User:
       type: object
+      required:
+        - id
+        - name
       properties:
         id:
           type: string
@@ -271,95 +87,118 @@ components:
           type: string
           format: email
           example: brandonnichols@example.net
-    Game:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: 94518720-e444-4b18-b6f7-34d8af654a5
-        date:
-          type: string
-          format: date
-          example: 1999-07-10
-        time:
-          type: string
-          format: date
-          example: 13:45:00
-    Seat:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: db10fba1-c46e-4712-a8c7-cc0991df54f4
-        gate:
-          type: integer
-          example: 9
-        col:
-          type: integer
-          example: 57
-        row:
-          type: string
-          pattern: '^[A-Z][A-Z]$'
-          example: A
+    # Game:
+    #   type: object
+    #   properties:
+    #     id:
+    #       type: string
+    #       format: uuid
+    #       example: 94518720-e444-4b18-b6f7-34d8af654a5
+    #     date:
+    #       type: string
+    #       format: date
+    #       example: 1999-07-10
+    #     time:
+    #       type: string
+    #       format: date
+    #       example: 13:45:00
+    # Seat:
+    #   type: object
+    #   properties:
+    #     id:
+    #       type: string
+    #       format: uuid
+    #       example: db10fba1-c46e-4712-a8c7-cc0991df54f4
+    #     gate:
+    #       type: integer
+    #       example: 9
+    #     col:
+    #       type: integer
+    #       example: 57
+    #     row:
+    #       type: string
+    #       pattern: '^[A-Z][A-Z]$'
+    #       example: AB
+    # Ticket:
+    #   type: object
+    #   properties:
+    #     id:
+    #       type: string
+    #       format: uuid
+    #       example: a79b47aa-301b-3221-a323-5e63601b9615
+    #     place:
+    #       type: integer
+    #       format: int64
+    #       example: 5000
+    #     user:
+    #       $ref: '#/components/schemas/User'
+    #     game:
+    #       $ref: '#/components/schemas/Game'
+    #     seat:
+    #       $ref: '#/components/schemas/Seat'
   requestBodies:
-    Ticket:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Ticket'
     User:
       required: true
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/User'
-    Game:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Game'
-    Seat:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Seat'
+    # Game:
+    #   required: true
+    #   content:
+    #     application/json:
+    #       schema:
+    #         $ref: '#/components/schemas/Game'
+    # Seat:
+    #   required: true
+    #   content:
+    #     application/json:
+    #       schema:
+    #         $ref: '#/components/schemas/Seat'
+    # Ticket:
+    #   required: true
+    #   content:
+    #     application/json:
+    #       schema:
+    #         $ref: '#/components/schemas/Ticket'
   responses:
-    200:
-      description: OK
-    200Ticket:
-      description: OK
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/Ticket'
     200User:
       description: OK
       content:
         text/plain:
           schema:
             $ref: '#/components/schemas/User'
-    200Game:
+    # 200Game:
+    #   description: OK
+    #   content:
+    #     text/plain:
+    #       schema:
+    #         $ref: '#/components/schemas/Game'
+    # 200Seat:
+    #   description: OK
+    #   content:
+    #     text/plain:
+    #       schema:
+    #         $ref: '#/components/schemas/Seat'
+    # 200Ticket:
+    #   description: OK
+    #   content:
+    #     text/plain:
+    #       schema:
+    #         $ref: '#/components/schemas/Ticket'
+    # 200Tickets:
+    #   description: OK
+    #   content:
+    #     text/plain:
+    #       schema:
+    #         type: array
+    #         items:
+    #           $ref: '#/components/schemas/Ticket'
+    200:
       description: OK
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/Game'
-    200Seat:
-      description: OK
-      content:
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/Seat'
     400:
       description: Bad request
     404:
       description: Not Found
-    409:
-      description: Conflict
     500:
-      description: Unexpected Error
+      description: Internal Server Error

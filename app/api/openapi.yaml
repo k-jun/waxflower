@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: keijun091221@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: WaxFlower
+  version: 0.1.0
+servers:
+- url: /
+tags:
+- description: What is essential is usually invisible to the eye
+  name: main
+- description: Everything about ticket
+  name: ticket
+- description: Everything about user
+  name: user
+- description: Everything about game
+  name: game
+- description: Everything about seat
+  name: seat
+paths:
+  /users:
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/User'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+        "500":
+          description: Internal Server Error
+      tags:
+      - user
+  /users/{userId}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          example: 17737082-837e-49f4-a627-87d7a1594b60
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: OK
+        "400":
+          description: Bad request
+        "500":
+          description: Internal Server Error
+      tags:
+      - user
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          example: c9dfaa6d-c7b9-4ec6-88e4-307222c4d29e
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/User'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+        "500":
+          description: Internal Server Error
+      tags:
+      - user
+components:
+  requestBodies:
+    User:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+      required: true
+  responses:
+    "200User":
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/User'
+      description: OK
+    "200":
+      description: OK
+    "400":
+      description: Bad request
+    "404":
+      description: Not Found
+    "500":
+      description: Internal Server Error
+  schemas:
+    User:
+      example:
+        name: brandonnichols@example.net
+        id: e241f57c-0521-3caf-82ac-c1295eb32ac8
+      properties:
+        id:
+          example: e241f57c-0521-3caf-82ac-c1295eb32ac8
+          format: uuid
+          type: string
+        name:
+          example: brandonnichols@example.net
+          format: email
+          type: string
+      required:
+      - id
+      - name
+      type: object
