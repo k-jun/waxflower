@@ -64,8 +64,9 @@ func (db *UserDB) UpdateUser(u *User) (*User, error) {
 func (db *UserDB) DeleteUser(u *User) (*User, error) {
 	db.rw.Lock()
 	defer db.rw.Unlock()
-	if _, ok := db.storage[u.Id]; ok {
-		delete(db.storage, u.Id)
+	if _, ok := db.storage[u.Id]; !ok {
+		return nil, ErrNotFound
 	}
-	return nil, ErrNotFound
+	delete(db.storage, u.Id)
+	return u, nil
 }
