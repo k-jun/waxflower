@@ -17,13 +17,35 @@ import (
 
 
 
+// GameAPIRouter defines the required methods for binding the api requests to a responses for the GameAPI
+// The GameAPIRouter implementation should parse necessary information from the http request,
+// pass the data to a GameAPIServicer to perform the required actions, then write the service results to the http response.
+type GameAPIRouter interface { 
+	GamesGameIdDelete(http.ResponseWriter, *http.Request)
+	GamesGameIdGet(http.ResponseWriter, *http.Request)
+	GamesGameIdPut(http.ResponseWriter, *http.Request)
+	GamesPost(http.ResponseWriter, *http.Request)
+}
 // UserAPIRouter defines the required methods for binding the api requests to a responses for the UserAPI
 // The UserAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a UserAPIServicer to perform the required actions, then write the service results to the http response.
 type UserAPIRouter interface { 
 	UsersPost(http.ResponseWriter, *http.Request)
+	UsersUserIdDelete(http.ResponseWriter, *http.Request)
 	UsersUserIdGet(http.ResponseWriter, *http.Request)
 	UsersUserIdPut(http.ResponseWriter, *http.Request)
+}
+
+
+// GameAPIServicer defines the api actions for the GameAPI service
+// This interface intended to stay up to date with the openapi yaml used to generate it,
+// while the service implementation can be ignored with the .openapi-generator-ignore file
+// and updated with the logic required for the API.
+type GameAPIServicer interface { 
+	GamesGameIdDelete(context.Context, string) (ImplResponse, error)
+	GamesGameIdGet(context.Context, string) (ImplResponse, error)
+	GamesGameIdPut(context.Context, string, Game) (ImplResponse, error)
+	GamesPost(context.Context, Game) (ImplResponse, error)
 }
 
 
@@ -33,6 +55,7 @@ type UserAPIRouter interface {
 // and updated with the logic required for the API.
 type UserAPIServicer interface { 
 	UsersPost(context.Context, User) (ImplResponse, error)
+	UsersUserIdDelete(context.Context, string) (ImplResponse, error)
 	UsersUserIdGet(context.Context, string) (ImplResponse, error)
 	UsersUserIdPut(context.Context, string, User) (ImplResponse, error)
 }

@@ -30,11 +30,27 @@ paths:
           description: OK
         "400":
           description: Bad request
-        "500":
-          description: Internal Server Error
       tags:
       - user
   /users/{userId}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          example: 77ec276c-7301-46c1-bcbe-e6d31ef5acc6
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - user
     get:
       parameters:
       - explode: false
@@ -55,8 +71,6 @@ paths:
           description: OK
         "400":
           description: Bad request
-        "500":
-          description: Internal Server Error
       tags:
       - user
     put:
@@ -77,10 +91,84 @@ paths:
           description: OK
         "400":
           description: Bad request
-        "500":
-          description: Internal Server Error
       tags:
       - user
+  /games:
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/Game'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - game
+  /games/{gameId}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: gameId
+        required: true
+        schema:
+          example: 9e3b2af4-2564-48e9-913c-48e2326e81fa
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - game
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: gameId
+        required: true
+        schema:
+          example: 08384d72-bf72-446e-b74e-1449f707639b
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Game'
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - game
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: gameId
+        required: true
+        schema:
+          example: 08384d72-bf72-446e-b74e-1449f707639b
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/Game'
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Game'
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - game
 components:
   requestBodies:
     User:
@@ -89,12 +177,24 @@ components:
           schema:
             $ref: '#/components/schemas/User'
       required: true
+    Game:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Game'
+      required: true
   responses:
     "200User":
       content:
         text/plain:
           schema:
             $ref: '#/components/schemas/User'
+      description: OK
+    "200Game":
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/Game'
       description: OK
     "200":
       description: OK
@@ -121,4 +221,22 @@ components:
       required:
       - id
       - name
+      type: object
+    Game:
+      example:
+        date: 1999-07-10T00:00:00.000+00:00
+        id: 94518720-e444-4b18-b6f7-034d8af654a5
+        time: 2000-01-23
+      properties:
+        id:
+          example: 94518720-e444-4b18-b6f7-034d8af654a5
+          format: uuid
+          type: string
+        date:
+          example: 1999-07-10
+          format: date
+          type: string
+        time:
+          format: date
+          type: string
       type: object

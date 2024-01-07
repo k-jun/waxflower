@@ -56,6 +56,11 @@ func (c *UserAPIController) Routes() Routes {
 			"/users",
 			c.UsersPost,
 		},
+		"UsersUserIdDelete": Route{
+			strings.ToUpper("Delete"),
+			"/users/{userId}",
+			c.UsersUserIdDelete,
+		},
 		"UsersUserIdGet": Route{
 			strings.ToUpper("Get"),
 			"/users/{userId}",
@@ -87,6 +92,24 @@ func (c *UserAPIController) UsersPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	result, err := c.service.UsersPost(r.Context(), userParam)
+	// If an error occurred, encode the error with the status code
+	if err != nil {
+		c.errorHandler(w, r, err, &result)
+		return
+	}
+	// If no error, encode the body and the result code
+	EncodeJSONResponse(result.Body, &result.Code, w)
+}
+
+// UsersUserIdDelete - 
+func (c *UserAPIController) UsersUserIdDelete(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	userIdParam := params["userId"]
+	if userIdParam == "" {
+		c.errorHandler(w, r, &RequiredError{"userId"}, nil)
+		return
+	}
+	result, err := c.service.UsersUserIdDelete(r.Context(), userIdParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

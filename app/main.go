@@ -20,11 +20,14 @@ import (
 func main() {
 	log.Printf("Server started")
 
+	GameAPIService := openapi.NewGameAPIService()
+	GameAPIController := openapi.NewGameAPIController(GameAPIService)
+
 	userDB := openapi.NewUserDB()
 	UserAPIService := openapi.NewUserAPIService(userDB)
 	UserAPIController := openapi.NewUserAPIController(UserAPIService)
 
-	router := openapi.NewRouter(UserAPIController)
+	router := openapi.NewRouter(GameAPIController, UserAPIController)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

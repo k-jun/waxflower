@@ -35,6 +35,15 @@ func (s *UserAPIService) UsersPost(ctx context.Context, user User) (ImplResponse
 	return Response(200, nil), nil
 }
 
+// UsersUserIdDelete -
+func (s *UserAPIService) UsersUserIdDelete(ctx context.Context, userId string) (ImplResponse, error) {
+	_, err := s.userDB.DeleteUser(&User{Id: userId})
+	if err != nil {
+		return Response(400, nil), err
+	}
+	return Response(200, nil), nil
+}
+
 // UsersUserIdGet -
 func (s *UserAPIService) UsersUserIdGet(ctx context.Context, userId string) (ImplResponse, error) {
 	u, err := s.userDB.SelectUser(&User{Id: userId})
