@@ -12,73 +12,53 @@ package openapi
 
 import (
 	"context"
-	"net/http"
-	"errors"
 )
 
 // GameAPIService is a service that implements the logic for the GameAPIServicer
 // This service should implement the business logic for every endpoint for the GameAPI API.
 // Include any external packages or services that will be required by this service.
 type GameAPIService struct {
+	db IDB
 }
 
 // NewGameAPIService creates a default api service
-func NewGameAPIService() GameAPIServicer {
-	return &GameAPIService{}
+func NewGameAPIService(db IDB) GameAPIServicer {
+	return &GameAPIService{db}
 }
 
-// GamesGameIdDelete - 
+// GamesGameIdDelete -
 func (s *GameAPIService) GamesGameIdDelete(ctx context.Context, gameId string) (ImplResponse, error) {
-	// TODO - update GamesGameIdDelete with the required logic for this service method.
-	// Add api_game_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
-	// return Response(200, nil),nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GamesGameIdDelete method not implemented")
+	_, err := s.db.DeleteGame(&Game{Id: gameId})
+	if err != nil {
+		return Response(400, nil), err
+	}
+	return Response(200, nil), nil
 }
 
-// GamesGameIdGet - 
+// GamesGameIdGet -
 func (s *GameAPIService) GamesGameIdGet(ctx context.Context, gameId string) (ImplResponse, error) {
-	// TODO - update GamesGameIdGet with the required logic for this service method.
-	// Add api_game_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, Game{}) or use other options such as http.Ok ...
-	// return Response(200, Game{}), nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GamesGameIdGet method not implemented")
+	g, err := s.db.SelectGame(&Game{Id: gameId})
+	if err != nil {
+		return Response(400, nil), err
+	}
+	return Response(200, g), nil
 }
 
-// GamesGameIdPut - 
+// GamesGameIdPut -
 func (s *GameAPIService) GamesGameIdPut(ctx context.Context, gameId string, game Game) (ImplResponse, error) {
-	// TODO - update GamesGameIdPut with the required logic for this service method.
-	// Add api_game_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, Game{}) or use other options such as http.Ok ...
-	// return Response(200, Game{}), nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GamesGameIdPut method not implemented")
+	game.Id = gameId
+	g, err := s.db.UpdateGame(&game)
+	if err != nil {
+		return Response(400, nil), err
+	}
+	return Response(200, g), nil
 }
 
-// GamesPost - 
+// GamesPost -
 func (s *GameAPIService) GamesPost(ctx context.Context, game Game) (ImplResponse, error) {
-	// TODO - update GamesPost with the required logic for this service method.
-	// Add api_game_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
-	// return Response(200, nil),nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GamesPost method not implemented")
+	_, err := s.db.InsertGame(&game)
+	if err != nil {
+		return Response(400, nil), err
+	}
+	return Response(200, nil), nil
 }

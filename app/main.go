@@ -20,11 +20,11 @@ import (
 func main() {
 	log.Printf("Server started")
 
-	GameAPIService := openapi.NewGameAPIService()
+	db := openapi.NewMemoryDB()
+	GameAPIService := openapi.NewGameAPIService(db)
 	GameAPIController := openapi.NewGameAPIController(GameAPIService)
 
-	userDB := openapi.NewUserDB()
-	UserAPIService := openapi.NewUserAPIService(userDB)
+	UserAPIService := openapi.NewUserAPIService(db)
 	UserAPIController := openapi.NewUserAPIController(UserAPIService)
 
 	router := openapi.NewRouter(GameAPIController, UserAPIController)

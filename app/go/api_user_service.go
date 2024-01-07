@@ -18,26 +18,17 @@ import (
 // This service should implement the business logic for every endpoint for the UserAPI API.
 // Include any external packages or services that will be required by this service.
 type UserAPIService struct {
-	userDB IUserDB
+	db IDB
 }
 
 // NewUserAPIService creates a default api service
-func NewUserAPIService(userDB IUserDB) UserAPIServicer {
+func NewUserAPIService(userDB IDB) UserAPIServicer {
 	return &UserAPIService{userDB}
-}
-
-// UsersPost -
-func (s *UserAPIService) UsersPost(ctx context.Context, user User) (ImplResponse, error) {
-	_, err := s.userDB.InsertUser(&user)
-	if err != nil {
-		return Response(400, nil), err
-	}
-	return Response(200, nil), nil
 }
 
 // UsersUserIdDelete -
 func (s *UserAPIService) UsersUserIdDelete(ctx context.Context, userId string) (ImplResponse, error) {
-	_, err := s.userDB.DeleteUser(&User{Id: userId})
+	_, err := s.db.DeleteUser(&User{Id: userId})
 	if err != nil {
 		return Response(400, nil), err
 	}
@@ -46,7 +37,7 @@ func (s *UserAPIService) UsersUserIdDelete(ctx context.Context, userId string) (
 
 // UsersUserIdGet -
 func (s *UserAPIService) UsersUserIdGet(ctx context.Context, userId string) (ImplResponse, error) {
-	u, err := s.userDB.SelectUser(&User{Id: userId})
+	u, err := s.db.SelectUser(&User{Id: userId})
 	if err != nil {
 		return Response(400, nil), err
 	}
@@ -56,9 +47,18 @@ func (s *UserAPIService) UsersUserIdGet(ctx context.Context, userId string) (Imp
 // UsersUserIdPut -
 func (s *UserAPIService) UsersUserIdPut(ctx context.Context, userId string, user User) (ImplResponse, error) {
 	user.Id = userId
-	u, err := s.userDB.UpdateUser(&user)
+	u, err := s.db.UpdateUser(&user)
 	if err != nil {
 		return Response(400, nil), err
 	}
 	return Response(200, u), nil
+}
+
+// UsersPost -
+func (s *UserAPIService) UsersPost(ctx context.Context, user User) (ImplResponse, error) {
+	_, err := s.db.InsertUser(&user)
+	if err != nil {
+		return Response(400, nil), err
+	}
+	return Response(200, nil), nil
 }
