@@ -226,7 +226,7 @@ components:
       example:
         date: 1999-07-10T00:00:00.000+00:00
         id: 94518720-e444-4b18-b6f7-034d8af654a5
-        time: 2000-01-23
+        time: "49500"
       properties:
         id:
           example: 94518720-e444-4b18-b6f7-034d8af654a5
@@ -237,6 +237,11 @@ components:
           format: date
           type: string
         time:
-          format: date
+          example: "49500"
+          format: time
           type: string
+      required:
+      - date
+      - id
+      - time
       type: object

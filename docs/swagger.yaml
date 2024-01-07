@@ -161,6 +161,10 @@ components:
           example: brandonnichols@example.net
     Game:
       type: object
+      required:
+        - id
+        - date
+        - time
       properties:
         id:
           type: string
@@ -172,7 +176,7 @@ components:
           example: 1999-07-10
         time:
           type: string
-          format: date
+          format: time
           example: 13:45:00
     # Seat:
     #   type: object
