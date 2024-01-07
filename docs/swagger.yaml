@@ -143,6 +143,69 @@ paths:
           $ref: "#/components/responses/200"
         400:
           $ref: "#/components/responses/400"
+  /seats:
+    post:
+      tags:
+        - seat
+      requestBody:
+        $ref: "#/components/requestBodies/Seat"
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
+  /seats/{seatId}:
+    get:
+      tags:
+        - seat
+      parameters:
+        - in: path
+          name: seatId
+          schema:
+            type: string
+            format: uuid
+            example: 2583c890-a814-4ec1-a1f1-1818c530679a
+          required: true
+      responses:
+        200:
+          $ref: "#/components/responses/200Seat"
+        400:
+          $ref: "#/components/responses/400"
+    put:
+      tags:
+        - seat
+      parameters:
+        - in: path
+          name: seatId
+          schema:
+            type: string
+            format: uuid
+            example: e15805d1-b82d-4942-9046-84a73319d060
+          required: true
+      requestBody:
+        $ref: "#/components/requestBodies/Seat"
+      responses:
+        200:
+          $ref: "#/components/responses/200Seat"
+        400:
+          $ref: "#/components/responses/400"
+    delete:
+      tags:
+        - seat
+      parameters:
+        - in: path
+          name: seatId
+          schema:
+            type: string
+            format: uuid
+            example: 741bae28-7f4a-4b0b-aad7-2323fb61dc58
+          required: true
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
+
 components:
   schemas:
     User:
@@ -178,23 +241,32 @@ components:
           type: string
           format: time
           example: 13:45:00
-    # Seat:
-    #   type: object
-    #   properties:
-    #     id:
-    #       type: string
-    #       format: uuid
-    #       example: db10fba1-c46e-4712-a8c7-cc0991df54f4
-    #     gate:
-    #       type: integer
-    #       example: 9
-    #     col:
-    #       type: integer
-    #       example: 57
-    #     row:
-    #       type: string
-    #       pattern: '^[A-Z][A-Z]$'
-    #       example: AB
+    Seat:
+      type: object
+      required:
+        - id
+        - gate
+        - col
+        - row
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: db10fba1-c46e-4712-a8c7-cc0991df54f4
+        gate:
+          type: integer
+          minimum: 1
+          maximum: 9
+          example: 7
+        col:
+          type: integer
+          minimum: 1
+          maximum: 99
+          example: 57
+        row:
+          type: string
+          pattern: '^[A-Z][A-Z]$'
+          example: AZ
     # Ticket:
     #   type: object
     #   properties:
@@ -225,12 +297,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Game'
-    # Seat:
-    #   required: true
-    #   content:
-    #     application/json:
-    #       schema:
-    #         $ref: '#/components/schemas/Seat'
+    Seat:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Seat'
     # Ticket:
     #   required: true
     #   content:
@@ -250,12 +322,12 @@ components:
         text/plain:
           schema:
             $ref: '#/components/schemas/Game'
-    # 200Seat:
-    #   description: OK
-    #   content:
-    #     text/plain:
-    #       schema:
-    #         $ref: '#/components/schemas/Seat'
+    200Seat:
+      description: OK
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/Seat'
     # 200Ticket:
     #   description: OK
     #   content:

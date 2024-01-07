@@ -169,6 +169,82 @@ paths:
           description: Bad request
       tags:
       - game
+  /seats:
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/Seat'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - seat
+  /seats/{seatId}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: seatId
+        required: true
+        schema:
+          example: 741bae28-7f4a-4b0b-aad7-2323fb61dc58
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - seat
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: seatId
+        required: true
+        schema:
+          example: 2583c890-a814-4ec1-a1f1-1818c530679a
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Seat'
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - seat
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: seatId
+        required: true
+        schema:
+          example: e15805d1-b82d-4942-9046-84a73319d060
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/Seat'
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Seat'
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - seat
 components:
   requestBodies:
     User:
@@ -183,6 +259,12 @@ components:
           schema:
             $ref: '#/components/schemas/Game'
       required: true
+    Seat:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Seat'
+      required: true
   responses:
     "200User":
       content:
@@ -195,6 +277,12 @@ components:
         text/plain:
           schema:
             $ref: '#/components/schemas/Game'
+      description: OK
+    "200Seat":
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/Seat'
       description: OK
     "200":
       description: OK
@@ -244,4 +332,35 @@ components:
       - date
       - id
       - time
+      type: object
+    Seat:
+      example:
+        col: 57
+        id: db10fba1-c46e-4712-a8c7-cc0991df54f4
+        gate: 7
+        row: AZ
+      properties:
+        id:
+          example: db10fba1-c46e-4712-a8c7-cc0991df54f4
+          format: uuid
+          type: string
+        gate:
+          example: 7
+          maximum: 9
+          minimum: 1
+          type: integer
+        col:
+          example: 57
+          maximum: 99
+          minimum: 1
+          type: integer
+        row:
+          example: AZ
+          pattern: "^[A-Z][A-Z]$"
+          type: string
+      required:
+      - col
+      - gate
+      - id
+      - row
       type: object

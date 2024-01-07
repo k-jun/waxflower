@@ -26,6 +26,15 @@ type GameAPIRouter interface {
 	GamesGameIdPut(http.ResponseWriter, *http.Request)
 	GamesPost(http.ResponseWriter, *http.Request)
 }
+// SeatAPIRouter defines the required methods for binding the api requests to a responses for the SeatAPI
+// The SeatAPIRouter implementation should parse necessary information from the http request,
+// pass the data to a SeatAPIServicer to perform the required actions, then write the service results to the http response.
+type SeatAPIRouter interface { 
+	SeatsPost(http.ResponseWriter, *http.Request)
+	SeatsSeatIdDelete(http.ResponseWriter, *http.Request)
+	SeatsSeatIdGet(http.ResponseWriter, *http.Request)
+	SeatsSeatIdPut(http.ResponseWriter, *http.Request)
+}
 // UserAPIRouter defines the required methods for binding the api requests to a responses for the UserAPI
 // The UserAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a UserAPIServicer to perform the required actions, then write the service results to the http response.
@@ -46,6 +55,18 @@ type GameAPIServicer interface {
 	GamesGameIdGet(context.Context, string) (ImplResponse, error)
 	GamesGameIdPut(context.Context, string, Game) (ImplResponse, error)
 	GamesPost(context.Context, Game) (ImplResponse, error)
+}
+
+
+// SeatAPIServicer defines the api actions for the SeatAPI service
+// This interface intended to stay up to date with the openapi yaml used to generate it,
+// while the service implementation can be ignored with the .openapi-generator-ignore file
+// and updated with the logic required for the API.
+type SeatAPIServicer interface { 
+	SeatsPost(context.Context, Seat) (ImplResponse, error)
+	SeatsSeatIdDelete(context.Context, string) (ImplResponse, error)
+	SeatsSeatIdGet(context.Context, string) (ImplResponse, error)
+	SeatsSeatIdPut(context.Context, string, Seat) (ImplResponse, error)
 }
 
 
