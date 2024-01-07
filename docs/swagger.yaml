@@ -30,8 +30,6 @@ paths:
           $ref: "#/components/responses/200"
         400:
           $ref: "#/components/responses/400"
-        500:
-          $ref: "#/components/responses/500"
   /users/{userId}:
     get:
       tags:
@@ -49,8 +47,6 @@ paths:
           $ref: "#/components/responses/200User"
         400:
           $ref: "#/components/responses/400"
-        500:
-          $ref: "#/components/responses/500"
     put:
       tags:
         - user
@@ -69,8 +65,84 @@ paths:
           $ref: "#/components/responses/200"
         400:
           $ref: "#/components/responses/400"
-        500:
-          $ref: "#/components/responses/500"
+    delete:
+      tags:
+        - user
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+            format: uuid
+            example: 77ec276c-7301-46c1-bcbe-e6d31ef5acc6
+          required: true
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
+  /games:
+    post:
+      tags:
+        - game
+      requestBody:
+        $ref: "#/components/requestBodies/Game"
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
+  /games/{gameId}:
+    get:
+      tags:
+        - game
+      parameters:
+        - in: path
+          name: gameId
+          schema:
+            type: string
+            format: uuid
+            example: 08384d72-bf72-446e-b74e-1449f707639b
+          required: true
+      responses:
+        200:
+          $ref: "#/components/responses/200Game"
+        400:
+          $ref: "#/components/responses/400"
+    put:
+      tags:
+        - game
+      parameters:
+        - in: path
+          name: gameId
+          schema:
+            type: string
+            format: uuid
+            example: 08384d72-bf72-446e-b74e-1449f707639b
+          required: true
+      requestBody:
+        $ref: "#/components/requestBodies/Game"
+      responses:
+        200:
+          $ref: "#/components/responses/200Game"
+        400:
+          $ref: "#/components/responses/400"
+    delete:
+      tags:
+        - game
+      parameters:
+        - in: path
+          name: gameId
+          schema:
+            type: string
+            format: uuid
+            example: 9e3b2af4-2564-48e9-913c-48e2326e81fa
+          required: true
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
 components:
   schemas:
     User:
@@ -87,21 +159,21 @@ components:
           type: string
           format: email
           example: brandonnichols@example.net
-    # Game:
-    #   type: object
-    #   properties:
-    #     id:
-    #       type: string
-    #       format: uuid
-    #       example: 94518720-e444-4b18-b6f7-34d8af654a5
-    #     date:
-    #       type: string
-    #       format: date
-    #       example: 1999-07-10
-    #     time:
-    #       type: string
-    #       format: date
-    #       example: 13:45:00
+    Game:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 94518720-e444-4b18-b6f7-34d8af654a5
+        date:
+          type: string
+          format: date
+          example: 1999-07-10
+        time:
+          type: string
+          format: date
+          example: 13:45:00
     # Seat:
     #   type: object
     #   properties:
@@ -143,12 +215,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/User'
-    # Game:
-    #   required: true
-    #   content:
-    #     application/json:
-    #       schema:
-    #         $ref: '#/components/schemas/Game'
+    Game:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Game'
     # Seat:
     #   required: true
     #   content:
@@ -168,12 +240,12 @@ components:
         text/plain:
           schema:
             $ref: '#/components/schemas/User'
-    # 200Game:
-    #   description: OK
-    #   content:
-    #     text/plain:
-    #       schema:
-    #         $ref: '#/components/schemas/Game'
+    200Game:
+      description: OK
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/Game'
     # 200Seat:
     #   description: OK
     #   content:
