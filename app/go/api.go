@@ -35,6 +35,15 @@ type SeatAPIRouter interface {
 	SeatsSeatIdGet(http.ResponseWriter, *http.Request)
 	SeatsSeatIdPut(http.ResponseWriter, *http.Request)
 }
+// TicketAPIRouter defines the required methods for binding the api requests to a responses for the TicketAPI
+// The TicketAPIRouter implementation should parse necessary information from the http request,
+// pass the data to a TicketAPIServicer to perform the required actions, then write the service results to the http response.
+type TicketAPIRouter interface { 
+	TicketsPost(http.ResponseWriter, *http.Request)
+	TicketsTicketIdDelete(http.ResponseWriter, *http.Request)
+	TicketsTicketIdGet(http.ResponseWriter, *http.Request)
+	TicketsTicketIdPut(http.ResponseWriter, *http.Request)
+}
 // UserAPIRouter defines the required methods for binding the api requests to a responses for the UserAPI
 // The UserAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a UserAPIServicer to perform the required actions, then write the service results to the http response.
@@ -67,6 +76,18 @@ type SeatAPIServicer interface {
 	SeatsSeatIdDelete(context.Context, string) (ImplResponse, error)
 	SeatsSeatIdGet(context.Context, string) (ImplResponse, error)
 	SeatsSeatIdPut(context.Context, string, Seat) (ImplResponse, error)
+}
+
+
+// TicketAPIServicer defines the api actions for the TicketAPI service
+// This interface intended to stay up to date with the openapi yaml used to generate it,
+// while the service implementation can be ignored with the .openapi-generator-ignore file
+// and updated with the logic required for the API.
+type TicketAPIServicer interface { 
+	TicketsPost(context.Context, Ticket) (ImplResponse, error)
+	TicketsTicketIdDelete(context.Context, string) (ImplResponse, error)
+	TicketsTicketIdGet(context.Context, string) (ImplResponse, error)
+	TicketsTicketIdPut(context.Context, string, Ticket) (ImplResponse, error)
 }
 
 

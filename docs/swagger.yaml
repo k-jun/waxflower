@@ -205,7 +205,68 @@ paths:
           $ref: "#/components/responses/200"
         400:
           $ref: "#/components/responses/400"
-
+  /tickets:
+    post:
+      tags:
+        - ticket
+      requestBody:
+        $ref: "#/components/requestBodies/Ticket"
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
+  /tickets/{ticketId}:
+    get:
+      tags:
+        - ticket
+      parameters:
+        - in: path
+          name: ticketId
+          schema:
+            type: string
+            format: uuid
+            example: 2583c890-a814-4ec1-a1f1-1818c530679a
+          required: true
+      responses:
+        200:
+          $ref: "#/components/responses/200Ticket"
+        400:
+          $ref: "#/components/responses/400"
+    put:
+      tags:
+        - ticket
+      parameters:
+        - in: path
+          name: ticketId
+          schema:
+            type: string
+            format: uuid
+            example: e15805d1-b82d-4942-9046-84a73319d060
+          required: true
+      requestBody:
+        $ref: "#/components/requestBodies/Ticket"
+      responses:
+        200:
+          $ref: "#/components/responses/200Ticket"
+        400:
+          $ref: "#/components/responses/400"
+    delete:
+      tags:
+        - ticket
+      parameters:
+        - in: path
+          name: ticketId
+          schema:
+            type: string
+            format: uuid
+            example: 741bae28-7f4a-4b0b-aad7-2323fb61dc58
+          required: true
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
 components:
   schemas:
     User:
@@ -245,7 +306,7 @@ components:
       type: object
       required:
         - id
-        - gate
+        - sec
         - col
         - row
       properties:
@@ -253,7 +314,7 @@ components:
           type: string
           format: uuid
           example: db10fba1-c46e-4712-a8c7-cc0991df54f4
-        gate:
+        sec:
           type: integer
           minimum: 1
           maximum: 9
@@ -267,23 +328,29 @@ components:
           type: string
           pattern: '^[A-Z][A-Z]$'
           example: AZ
-    # Ticket:
-    #   type: object
-    #   properties:
-    #     id:
-    #       type: string
-    #       format: uuid
-    #       example: a79b47aa-301b-3221-a323-5e63601b9615
-    #     place:
-    #       type: integer
-    #       format: int64
-    #       example: 5000
-    #     user:
-    #       $ref: '#/components/schemas/User'
-    #     game:
-    #       $ref: '#/components/schemas/Game'
-    #     seat:
-    #       $ref: '#/components/schemas/Seat'
+    Ticket:
+      type: object
+      required:
+        - id
+        - price
+        - user
+        - game
+        - seat
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: a79b47aa-301b-3221-a323-5e63601b9615
+        price:
+          type: integer
+          format: int64
+          example: 5000
+        user:
+          $ref: '#/components/schemas/User'
+        game:
+          $ref: '#/components/schemas/Game'
+        seat:
+          $ref: '#/components/schemas/Seat'
   requestBodies:
     User:
       required: true
@@ -303,12 +370,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Seat'
-    # Ticket:
-    #   required: true
-    #   content:
-    #     application/json:
-    #       schema:
-    #         $ref: '#/components/schemas/Ticket'
+    Ticket:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ticket'
   responses:
     200User:
       description: OK
@@ -328,12 +395,12 @@ components:
         text/plain:
           schema:
             $ref: '#/components/schemas/Seat'
-    # 200Ticket:
-    #   description: OK
-    #   content:
-    #     text/plain:
-    #       schema:
-    #         $ref: '#/components/schemas/Ticket'
+    200Ticket:
+      description: OK
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/Ticket'
     # 200Tickets:
     #   description: OK
     #   content:

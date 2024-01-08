@@ -5,6 +5,8 @@ go.mod
 go/api.go
 go/api_game.go
 go/api_seat.go
+go/api_ticket.go
+go/api_ticket_service.go
 go/api_user.go
 go/error.go
 go/helpers.go
@@ -12,5 +14,6 @@ go/impl.go
 go/logger.go
 go/model_game.go
 go/model_seat.go
+go/model_ticket.go
 go/model_user.go
 go/routers.go

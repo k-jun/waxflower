@@ -245,6 +245,82 @@ paths:
           description: Bad request
       tags:
       - seat
+  /tickets:
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/Ticket'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - ticket
+  /tickets/{ticketId}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: ticketId
+        required: true
+        schema:
+          example: 741bae28-7f4a-4b0b-aad7-2323fb61dc58
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - ticket
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: ticketId
+        required: true
+        schema:
+          example: 2583c890-a814-4ec1-a1f1-1818c530679a
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - ticket
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: ticketId
+        required: true
+        schema:
+          example: e15805d1-b82d-4942-9046-84a73319d060
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/Ticket'
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - ticket
 components:
   requestBodies:
     User:
@@ -265,6 +341,12 @@ components:
           schema:
             $ref: '#/components/schemas/Seat'
       required: true
+    Ticket:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ticket'
+      required: true
   responses:
     "200User":
       content:
@@ -283,6 +365,12 @@ components:
         text/plain:
           schema:
             $ref: '#/components/schemas/Seat'
+      description: OK
+    "200Ticket":
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/Ticket'
       description: OK
     "200":
       description: OK
@@ -335,16 +423,16 @@ components:
       type: object
     Seat:
       example:
+        sec: 7
         col: 57
         id: db10fba1-c46e-4712-a8c7-cc0991df54f4
-        gate: 7
         row: AZ
       properties:
         id:
           example: db10fba1-c46e-4712-a8c7-cc0991df54f4
           format: uuid
           type: string
-        gate:
+        sec:
           example: 7
           maximum: 9
           minimum: 1
@@ -360,7 +448,45 @@ components:
           type: string
       required:
       - col
-      - gate
       - id
       - row
+      - sec
+      type: object
+    Ticket:
+      example:
+        seat:
+          sec: 7
+          col: 57
+          id: db10fba1-c46e-4712-a8c7-cc0991df54f4
+          row: AZ
+        game:
+          date: 1999-07-10T00:00:00.000+00:00
+          id: 94518720-e444-4b18-b6f7-034d8af654a5
+          time: "49500"
+        price: 5000
+        id: a79b47aa-301b-3221-a323-5e63601b9615
+        user:
+          name: brandonnichols@example.net
+          id: e241f57c-0521-3caf-82ac-c1295eb32ac8
+      properties:
+        id:
+          example: a79b47aa-301b-3221-a323-5e63601b9615
+          format: uuid
+          type: string
+        price:
+          example: 5000
+          format: int64
+          type: integer
+        user:
+          $ref: '#/components/schemas/User'
+        game:
+          $ref: '#/components/schemas/Game'
+        seat:
+          $ref: '#/components/schemas/Seat'
+      required:
+      - game
+      - id
+      - price
+      - seat
+      - user
       type: object

@@ -21,7 +21,7 @@ type Seat struct {
 
 	Id string `json:"id"`
 
-	Gate int32 `json:"gate"`
+	Sec int32 `json:"sec"`
 
 	Col int32 `json:"col"`
 
@@ -32,7 +32,7 @@ type Seat struct {
 func AssertSeatRequired(obj Seat) error {
 	elements := map[string]interface{}{
 		"id": obj.Id,
-		"gate": obj.Gate,
+		"sec": obj.Sec,
 		"col": obj.Col,
 		"row": obj.Row,
 	}
@@ -47,10 +47,10 @@ func AssertSeatRequired(obj Seat) error {
 
 // AssertSeatConstraints checks if the values respects the defined constraints
 func AssertSeatConstraints(obj Seat) error {
-	if obj.Gate < 1 {
+	if obj.Sec < 1 {
 		return &ParsingError{Err: errors.New(errMsgMinValueConstraint)}
 	}
-	if obj.Gate > 9 {
+	if obj.Sec > 9 {
 		return &ParsingError{Err: errors.New(errMsgMaxValueConstraint)}
 	}
 	if obj.Col < 1 {
