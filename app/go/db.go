@@ -23,13 +23,18 @@ type IDB interface {
 	InsertSeat(*Seat) (*Seat, error)
 	UpdateSeat(*Seat) (*Seat, error)
 	DeleteSeat(*Seat) (*Seat, error)
+	SelectTicket(*Ticket) (*Ticket, error)
+	InsertTicket(*Ticket) (*Ticket, error)
+	UpdateTicket(*Ticket) (*Ticket, error)
+	DeleteTicket(*Ticket) (*Ticket, error)
 }
 
 type MemoryDB struct {
-	users map[string]User
-	games map[string]Game
-	seats map[string]Seat
-	rw    sync.RWMutex
+	users   map[string]User
+	games   map[string]Game
+	seats   map[string]Seat
+	tickets map[string]Ticket
+	rw      sync.RWMutex
 }
 
 func NewMemoryDB() IDB {
@@ -75,7 +80,8 @@ func (db *MemoryDB) UpdateUser(u *User) (*User, error) {
 func (db *MemoryDB) DeleteUser(u *User) (*User, error) {
 	db.rw.Lock()
 	defer db.rw.Unlock()
-	if _, ok := db.users[u.Id]; !ok {
+	_, ok := db.users[u.Id]
+	if !ok {
 		return nil, ErrNotFound
 	}
 	delete(db.users, u.Id)
@@ -117,7 +123,8 @@ func (db *MemoryDB) UpdateGame(g *Game) (*Game, error) {
 func (db *MemoryDB) DeleteGame(g *Game) (*Game, error) {
 	db.rw.Lock()
 	defer db.rw.Unlock()
-	if _, ok := db.games[g.Id]; !ok {
+	_, ok := db.games[g.Id]
+	if !ok {
 		return nil, ErrNotFound
 	}
 	delete(db.games, g.Id)
@@ -159,9 +166,53 @@ func (db *MemoryDB) UpdateSeat(s *Seat) (*Seat, error) {
 func (db *MemoryDB) DeleteSeat(s *Seat) (*Seat, error) {
 	db.rw.Lock()
 	defer db.rw.Unlock()
-	if _, ok := db.seats[s.Id]; !ok {
+	_, ok := db.seats[s.Id]
+	if !ok {
 		return nil, ErrNotFound
 	}
 	delete(db.seats, s.Id)
 	return s, nil
+}
+
+func (db *MemoryDB) SelectTicket(t *Ticket) (*Ticket, error) {
+	db.rw.RLock()
+	defer db.rw.RUnlock()
+	v, ok := db.tickets[t.Id]
+	if !ok {
+		return nil, ErrNotFound
+	}
+	return &v, nil
+}
+
+func (db *MemoryDB) InsertTicket(t *Ticket) (*Ticket, error) {
+	db.rw.Lock()
+	defer db.rw.Unlock()
+	_, ok := db.tickets[t.Id]
+	if ok {
+		return nil, ErrAlreadyExist
+	}
+	db.tickets[t.Id] = *t
+	return t, nil
+}
+
+func (db *MemoryDB) UpdateTicket(t *Ticket) (*Ticket, error) {
+	db.rw.Lock()
+	defer db.rw.Unlock()
+	_, ok := db.tickets[t.Id]
+	if !ok {
+		return nil, ErrNotFound
+	}
+	db.tickets[t.Id] = *t
+	return t, nil
+}
+
+func (db *MemoryDB) DeleteTicket(t *Ticket) (*Ticket, error) {
+	db.rw.Lock()
+	defer db.rw.Unlock()
+	_, ok := db.tickets[t.Id]
+	if !ok {
+		return nil, ErrNotFound
+	}
+	delete(db.tickets, t.Id)
+	return t, nil
 }

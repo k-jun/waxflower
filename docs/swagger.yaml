@@ -40,7 +40,7 @@ paths:
           schema:
             type: string
             format: uuid
-            example: 17737082-837e-49f4-a627-87d7a1594b60
+            example: e241f57c-0521-3caf-82ac-c1295eb32ac8
           required: true
       responses:
         200:
@@ -56,7 +56,7 @@ paths:
           schema:
             type: string
             format: uuid
-            example: c9dfaa6d-c7b9-4ec6-88e4-307222c4d29e
+            example: e241f57c-0521-3caf-82ac-c1295eb32ac8
           required: true
       requestBody:
         $ref: "#/components/requestBodies/User"
@@ -74,7 +74,7 @@ paths:
           schema:
             type: string
             format: uuid
-            example: 77ec276c-7301-46c1-bcbe-e6d31ef5acc6
+            example: e241f57c-0521-3caf-82ac-c1295eb32ac8
           required: true
       responses:
         200:
@@ -102,7 +102,7 @@ paths:
           schema:
             type: string
             format: uuid
-            example: 08384d72-bf72-446e-b74e-1449f707639b
+            example: 94518720-e444-4b18-b6f7-34d8af654a5
           required: true
       responses:
         200:
@@ -118,7 +118,7 @@ paths:
           schema:
             type: string
             format: uuid
-            example: 08384d72-bf72-446e-b74e-1449f707639b
+            example: 94518720-e444-4b18-b6f7-34d8af654a5
           required: true
       requestBody:
         $ref: "#/components/requestBodies/Game"
@@ -136,7 +136,7 @@ paths:
           schema:
             type: string
             format: uuid
-            example: 9e3b2af4-2564-48e9-913c-48e2326e81fa
+            example: 94518720-e444-4b18-b6f7-34d8af654a5
           required: true
       responses:
         200:
@@ -164,7 +164,7 @@ paths:
           schema:
             type: string
             format: uuid
-            example: 2583c890-a814-4ec1-a1f1-1818c530679a
+            example: db10fba1-c46e-4712-a8c7-cc0991df54f4
           required: true
       responses:
         200:
@@ -180,7 +180,7 @@ paths:
           schema:
             type: string
             format: uuid
-            example: e15805d1-b82d-4942-9046-84a73319d060
+            example: db10fba1-c46e-4712-a8c7-cc0991df54f4
           required: true
       requestBody:
         $ref: "#/components/requestBodies/Seat"
@@ -198,7 +198,7 @@ paths:
           schema:
             type: string
             format: uuid
-            example: 741bae28-7f4a-4b0b-aad7-2323fb61dc58
+            example: db10fba1-c46e-4712-a8c7-cc0991df54f4
           required: true
       responses:
         200:
@@ -226,7 +226,7 @@ paths:
           schema:
             type: string
             format: uuid
-            example: 2583c890-a814-4ec1-a1f1-1818c530679a
+            example: a79b47aa-301b-3221-a323-5e63601b9615
           required: true
       responses:
         200:
@@ -242,7 +242,7 @@ paths:
           schema:
             type: string
             format: uuid
-            example: e15805d1-b82d-4942-9046-84a73319d060
+            example: a79b47aa-301b-3221-a323-5e63601b9615
           required: true
       requestBody:
         $ref: "#/components/requestBodies/Ticket"
@@ -260,7 +260,7 @@ paths:
           schema:
             type: string
             format: uuid
-            example: 741bae28-7f4a-4b0b-aad7-2323fb61dc58
+            example: a79b47aa-301b-3221-a323-5e63601b9615
           required: true
       responses:
         200:
@@ -273,13 +273,13 @@ components:
       type: object
       required:
         - id
-        - name
+        - email
       properties:
         id:
           type: string
           format: uuid
           example: e241f57c-0521-3caf-82ac-c1295eb32ac8
-        name:
+        email:
           type: string
           format: email
           example: brandonnichols@example.net
@@ -333,9 +333,8 @@ components:
       required:
         - id
         - price
-        - user
-        - game
-        - seat
+        - gameId
+        - seatId
       properties:
         id:
           type: string
@@ -345,12 +344,21 @@ components:
           type: integer
           format: int64
           example: 5000
-        user:
-          $ref: '#/components/schemas/User'
-        game:
-          $ref: '#/components/schemas/Game'
-        seat:
-          $ref: '#/components/schemas/Seat'
+        userId:
+          type: string
+          format: uuid
+          example:
+            $ref: '#/components/schemas/User/properties/id/example'
+        gameId:
+          type: string
+          format: uuid
+          example:
+            $ref: '#/components/schemas/Game/properties/id/example'
+        seatId:
+          type: string
+          format: uuid
+          example:
+            $ref: '#/components/schemas/Seat/properties/id/example'
   requestBodies:
     User:
       required: true

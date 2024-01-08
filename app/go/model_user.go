@@ -17,14 +17,14 @@ type User struct {
 
 	Id string `json:"id"`
 
-	Name string `json:"name"`
+	Email string `json:"email"`
 }
 
 // AssertUserRequired checks if the required fields are not zero-ed
 func AssertUserRequired(obj User) error {
 	elements := map[string]interface{}{
 		"id": obj.Id,
-		"name": obj.Name,
+		"email": obj.Email,
 	}
 	for name, el := range elements {
 		if isZero := IsZeroValue(el); isZero {
