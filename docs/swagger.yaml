@@ -7,6 +7,8 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 0.1.0
+servers:
+  - url: http://localhost:8080
 tags:
   - name: main
     description: What is essential is usually invisible to the eye

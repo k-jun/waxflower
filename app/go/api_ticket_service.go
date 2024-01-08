@@ -12,22 +12,23 @@ package openapi
 
 import (
 	"context"
-	"net/http"
 	"errors"
+	"net/http"
 )
 
 // TicketAPIService is a service that implements the logic for the TicketAPIServicer
 // This service should implement the business logic for every endpoint for the TicketAPI API.
 // Include any external packages or services that will be required by this service.
 type TicketAPIService struct {
+	db IDB
 }
 
 // NewTicketAPIService creates a default api service
-func NewTicketAPIService() TicketAPIServicer {
-	return &TicketAPIService{}
+func NewTicketAPIService(db IDB) TicketAPIServicer {
+	return &TicketAPIService{db}
 }
 
-// TicketsPost - 
+// TicketsPost -
 func (s *TicketAPIService) TicketsPost(ctx context.Context, ticket Ticket) (ImplResponse, error) {
 	// TODO - update TicketsPost with the required logic for this service method.
 	// Add api_ticket_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
@@ -41,7 +42,7 @@ func (s *TicketAPIService) TicketsPost(ctx context.Context, ticket Ticket) (Impl
 	return Response(http.StatusNotImplemented, nil), errors.New("TicketsPost method not implemented")
 }
 
-// TicketsTicketIdDelete - 
+// TicketsTicketIdDelete -
 func (s *TicketAPIService) TicketsTicketIdDelete(ctx context.Context, ticketId string) (ImplResponse, error) {
 	// TODO - update TicketsTicketIdDelete with the required logic for this service method.
 	// Add api_ticket_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
@@ -55,7 +56,7 @@ func (s *TicketAPIService) TicketsTicketIdDelete(ctx context.Context, ticketId s
 	return Response(http.StatusNotImplemented, nil), errors.New("TicketsTicketIdDelete method not implemented")
 }
 
-// TicketsTicketIdGet - 
+// TicketsTicketIdGet -
 func (s *TicketAPIService) TicketsTicketIdGet(ctx context.Context, ticketId string) (ImplResponse, error) {
 	// TODO - update TicketsTicketIdGet with the required logic for this service method.
 	// Add api_ticket_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
@@ -69,7 +70,7 @@ func (s *TicketAPIService) TicketsTicketIdGet(ctx context.Context, ticketId stri
 	return Response(http.StatusNotImplemented, nil), errors.New("TicketsTicketIdGet method not implemented")
 }
 
-// TicketsTicketIdPut - 
+// TicketsTicketIdPut -
 func (s *TicketAPIService) TicketsTicketIdPut(ctx context.Context, ticketId string, ticket Ticket) (ImplResponse, error) {
 	// TODO - update TicketsTicketIdPut with the required logic for this service method.
 	// Add api_ticket_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
