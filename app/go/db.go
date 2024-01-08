@@ -39,9 +39,10 @@ type MemoryDB struct {
 
 func NewMemoryDB() IDB {
 	return &MemoryDB{
-		users: map[string]User{},
-		games: map[string]Game{},
-		seats: map[string]Seat{},
+		users:   map[string]User{},
+		games:   map[string]Game{},
+		seats:   map[string]Seat{},
+		tickets: map[string]Ticket{},
 	}
 }
 

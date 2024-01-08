@@ -21,6 +21,75 @@ tags:
   - name: seat
     description: Everything about seat
 paths:
+  /tickets/search:
+    get:
+      tags:
+        - main
+      parameters:
+        - in: query
+          name: dateBefore
+          schema:
+            type: string
+            format: date
+            example: 2012-04-01
+          required: true
+        - in: query
+          name: dateAfter
+          schema:
+            type: string
+            format: date
+            example: 2020-07-28
+          required: true
+        - in: query
+          name: secFrom
+          schema:
+            type: string
+            format: uuid
+            example: 5
+        - in: query
+          name: secTo
+          schema:
+            type: string
+            format: uuid
+            example: 9
+        - in: query
+          name: priceMin
+          schema:
+            type: integer
+            example: 3000
+        - in: query
+          name: priceMax
+          schema:
+            type: integer
+            example: 6000
+      responses:
+        200:
+          $ref: "#/components/responses/200Tickets"
+        400:
+          $ref: "#/components/responses/400"
+  /tickets/buy:
+    put:
+      tags:
+        - main
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 9d7efaa0-9ae4-41c2-9d13-d8f3d009e44f
+                userId:
+                  type: string
+                  format: uuid
+                  example: ffec5bda-dee6-4c8c-a8a0-0dd0554261cc
+      responses:
+        200:
+          $ref: "#/components/responses/200Ticket"
+        400:
+          $ref: "#/components/responses/400"
   /users:
     post:
       tags:
@@ -411,14 +480,14 @@ components:
         text/plain:
           schema:
             $ref: '#/components/schemas/Ticket'
-    # 200Tickets:
-    #   description: OK
-    #   content:
-    #     text/plain:
-    #       schema:
-    #         type: array
-    #         items:
-    #           $ref: '#/components/schemas/Ticket'
+    200Tickets:
+      description: OK
+      content:
+        text/plain:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Ticket'
     200:
       description: OK
     400:
