@@ -27,6 +27,15 @@ type IDB interface {
 	InsertTicket(*Ticket) (*Ticket, error)
 	UpdateTicket(*Ticket) (*Ticket, error)
 	DeleteTicket(*Ticket) (*Ticket, error)
+	BuyTicket(*Ticket) (*Ticket, error)
+	SearchTickets(
+		dateBefore string,
+		dateAfter string,
+		secFrom int32,
+		secTo int32,
+		priceMin int32,
+		priceMax int32,
+	) ([]*Ticket, error)
 }
 
 type MemoryDB struct {
@@ -216,4 +225,46 @@ func (db *MemoryDB) DeleteTicket(t *Ticket) (*Ticket, error) {
 	}
 	delete(db.tickets, t.Id)
 	return t, nil
+}
+
+func (db *MemoryDB) BuyTicket(t *Ticket) (*Ticket, error) {
+	db.rw.Lock()
+	defer db.rw.Unlock()
+	v, ok := db.tickets[t.Id]
+	if !ok {
+		return nil, ErrNotFound
+	}
+	v.UserId = t.UserId
+	db.tickets[t.Id] = v
+	return &v, nil
+}
+
+func (db *MemoryDB) SearchTickets(
+	dateBefore string,
+	dateAfter string,
+	secFrom int32,
+	secTo int32,
+	priceMin int32,
+	priceMax int32,
+) ([]*Ticket, error) {
+	db.rw.RLock()
+	defer db.rw.RUnlock()
+
+	ts := []*Ticket{}
+
+	for _, v := range db.tickets {
+		if v.Price < int64(priceMin) || v.Price > int64(priceMax) {
+			continue
+		}
+		sv := db.seats[v.SeatId]
+		if sv.Sec < secFrom || sv.Sec > secTo {
+			continue
+		}
+		gv := db.games[v.GameId]
+		if gv.Date < dateAfter || gv.Date > dateBefore {
+			continue
+		}
+		ts = append(ts, &v)
+	}
+	return ts, nil
 }

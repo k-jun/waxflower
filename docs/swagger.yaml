@@ -43,14 +43,12 @@ paths:
         - in: query
           name: secFrom
           schema:
-            type: string
-            format: uuid
+            type: integer
             example: 5
         - in: query
           name: secTo
           schema:
-            type: string
-            format: uuid
+            type: integer
             example: 9
         - in: query
           name: priceMin

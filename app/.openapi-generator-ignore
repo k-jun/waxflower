@@ -3,3 +3,4 @@ go/api_user_service.go
 go/api_game_service.go
 go/api_seat_service.go
 go/api_ticket_service.go
+go/api_main_service.go

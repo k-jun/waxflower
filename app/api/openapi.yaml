@@ -8,7 +8,7 @@ info:
   title: WaxFlower
   version: 0.1.0
 servers:
-- url: /
+- url: http://localhost:8080
 tags:
 - description: What is essential is usually invisible to the eye
   name: main
@@ -21,6 +21,90 @@ tags:
 - description: Everything about seat
   name: seat
 paths:
+  /tickets/search:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: dateBefore
+        required: true
+        schema:
+          example: 2012-04-01
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: dateAfter
+        required: true
+        schema:
+          example: 2020-07-28
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: secFrom
+        required: false
+        schema:
+          example: 5
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: secTo
+        required: false
+        schema:
+          example: 9
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: priceMin
+        required: false
+        schema:
+          example: 3000
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: priceMax
+        required: false
+        schema:
+          example: 6000
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Ticket'
+                type: array
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - main
+  /tickets/buy:
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_tickets_buy_put_request'
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - main
   /users:
     post:
       requestBody:
@@ -372,6 +456,14 @@ components:
           schema:
             $ref: '#/components/schemas/Ticket'
       description: OK
+    "200Tickets":
+      content:
+        text/plain:
+          schema:
+            items:
+              $ref: '#/components/schemas/Ticket'
+            type: array
+      description: OK
     "200":
       description: OK
     "400":
@@ -482,4 +574,15 @@ components:
       - id
       - price
       - seatId
+      type: object
+    _tickets_buy_put_request:
+      properties:
+        id:
+          example: 9d7efaa0-9ae4-41c2-9d13-d8f3d009e44f
+          format: uuid
+          type: string
+        userId:
+          example: ffec5bda-dee6-4c8c-a8a0-0dd0554261cc
+          format: uuid
+          type: string
       type: object

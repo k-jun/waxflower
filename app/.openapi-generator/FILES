@@ -4,14 +4,16 @@ api/openapi.yaml
 go.mod
 go/api.go
 go/api_game.go
+go/api_main.go
+go/api_main_service.go
 go/api_seat.go
 go/api_ticket.go
-go/api_ticket_service.go
 go/api_user.go
 go/error.go
 go/helpers.go
 go/impl.go
 go/logger.go
+go/model__tickets_buy_put_request.go
 go/model_game.go
 go/model_seat.go
 go/model_ticket.go
