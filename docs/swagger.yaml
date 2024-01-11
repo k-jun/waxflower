@@ -21,7 +21,7 @@ tags:
   - name: seat
     description: Everything about seat
 paths:
-  /tickets/search:
+  /search:
     get:
       tags:
         - main
@@ -65,7 +65,7 @@ paths:
           $ref: "#/components/responses/200Tickets"
         400:
           $ref: "#/components/responses/400"
-  /tickets/buy:
+  /buy:
     put:
       tags:
         - main

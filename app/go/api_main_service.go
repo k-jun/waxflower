@@ -26,19 +26,19 @@ func NewMainAPIService(db IDB) MainAPIServicer {
 	return &MainAPIService{db}
 }
 
-// TicketsBuyPut -
-func (s *MainAPIService) TicketsBuyPut(ctx context.Context, ticketsBuyPutRequest TicketsBuyPutRequest) (ImplResponse, error) {
-	ticket := Ticket{Id: ticketsBuyPutRequest.Id, UserId: ticketsBuyPutRequest.UserId}
-	t, err := s.db.BuyTicket(&ticket)
+// BuyPut -
+func (s *MainAPIService) BuyPut(ctx context.Context, buyPutRequest BuyPutRequest) (ImplResponse, error) {
+	t := Ticket{Id: buyPutRequest.Id, UserId: buyPutRequest.UserId}
+	x, err := s.db.BuyTicket(&t)
 	if err != nil {
 		return Response(400, nil), err
 	}
-	return Response(200, t), nil
+	return Response(200, x), nil
 }
 
-// TicketsSearchGet -
-func (s *MainAPIService) TicketsSearchGet(ctx context.Context, dateBefore string, dateAfter string, secFrom, secTo int32, priceMin int32, priceMax int32) (ImplResponse, error) {
-	t, err := s.db.SearchTickets(
+// SearchGet -
+func (s *MainAPIService) SearchGet(ctx context.Context, dateBefore string, dateAfter string, secFrom int32, secTo int32, priceMin int32, priceMax int32) (ImplResponse, error) {
+	ts, err := s.db.SearchTickets(
 		dateBefore,
 		dateAfter,
 		secFrom,
@@ -49,5 +49,5 @@ func (s *MainAPIService) TicketsSearchGet(ctx context.Context, dateBefore string
 	if err != nil {
 		return Response(400, nil), err
 	}
-	return Response(200, t), nil
+	return Response(200, ts), nil
 }

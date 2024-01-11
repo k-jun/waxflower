@@ -13,7 +13,7 @@ go/error.go
 go/helpers.go
 go/impl.go
 go/logger.go
-go/model__tickets_buy_put_request.go
+go/model__buy_put_request.go
 go/model_game.go
 go/model_seat.go
 go/model_ticket.go

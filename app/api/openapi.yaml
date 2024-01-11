@@ -21,7 +21,7 @@ tags:
 - description: Everything about seat
   name: seat
 paths:
-  /tickets/search:
+  /search:
     get:
       parameters:
       - explode: true
@@ -87,13 +87,13 @@ paths:
           description: Bad request
       tags:
       - main
-  /tickets/buy:
+  /buy:
     put:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/_tickets_buy_put_request'
+              $ref: '#/components/schemas/_buy_put_request'
       responses:
         "200":
           content:
@@ -575,7 +575,7 @@ components:
       - price
       - seatId
       type: object
-    _tickets_buy_put_request:
+    _buy_put_request:
       properties:
         id:
           example: 9d7efaa0-9ae4-41c2-9d13-d8f3d009e44f

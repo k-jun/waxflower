@@ -51,37 +51,37 @@ func NewMainAPIController(s MainAPIServicer, opts ...MainAPIOption) Router {
 // Routes returns all the api routes for the MainAPIController
 func (c *MainAPIController) Routes() Routes {
 	return Routes{
-		"TicketsBuyPut": Route{
+		"BuyPut": Route{
 			strings.ToUpper("Put"),
-			"/tickets/buy",
-			c.TicketsBuyPut,
+			"/buy",
+			c.BuyPut,
 		},
-		"TicketsSearchGet": Route{
+		"SearchGet": Route{
 			strings.ToUpper("Get"),
-			"/tickets/search",
-			c.TicketsSearchGet,
+			"/search",
+			c.SearchGet,
 		},
 	}
 }
 
-// TicketsBuyPut -
-func (c *MainAPIController) TicketsBuyPut(w http.ResponseWriter, r *http.Request) {
-	ticketsBuyPutRequestParam := TicketsBuyPutRequest{}
+// BuyPut -
+func (c *MainAPIController) BuyPut(w http.ResponseWriter, r *http.Request) {
+	buyPutRequestParam := BuyPutRequest{}
 	d := json.NewDecoder(r.Body)
 	d.DisallowUnknownFields()
-	if err := d.Decode(&ticketsBuyPutRequestParam); err != nil && !errors.Is(err, io.EOF) {
+	if err := d.Decode(&buyPutRequestParam); err != nil && !errors.Is(err, io.EOF) {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
-	if err := AssertTicketsBuyPutRequestRequired(ticketsBuyPutRequestParam); err != nil {
+	if err := AssertBuyPutRequestRequired(buyPutRequestParam); err != nil {
 		c.errorHandler(w, r, err, nil)
 		return
 	}
-	if err := AssertTicketsBuyPutRequestConstraints(ticketsBuyPutRequestParam); err != nil {
+	if err := AssertBuyPutRequestConstraints(buyPutRequestParam); err != nil {
 		c.errorHandler(w, r, err, nil)
 		return
 	}
-	result, err := c.service.TicketsBuyPut(r.Context(), ticketsBuyPutRequestParam)
+	result, err := c.service.BuyPut(r.Context(), buyPutRequestParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -91,8 +91,8 @@ func (c *MainAPIController) TicketsBuyPut(w http.ResponseWriter, r *http.Request
 	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
-// TicketsSearchGet -
-func (c *MainAPIController) TicketsSearchGet(w http.ResponseWriter, r *http.Request) {
+// SearchGet -
+func (c *MainAPIController) SearchGet(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	var dateBeforeParam string
 	if query.Has("dateBefore") {
@@ -168,7 +168,7 @@ func (c *MainAPIController) TicketsSearchGet(w http.ResponseWriter, r *http.Requ
 		priceMaxParam = param
 	} else {
 	}
-	result, err := c.service.TicketsSearchGet(r.Context(), dateBeforeParam, dateAfterParam, secFromParam, secToParam, priceMinParam, priceMaxParam)
+	result, err := c.service.SearchGet(r.Context(), dateBeforeParam, dateAfterParam, secFromParam, secToParam, priceMinParam, priceMaxParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

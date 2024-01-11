@@ -30,8 +30,8 @@ type GameAPIRouter interface {
 // The MainAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a MainAPIServicer to perform the required actions, then write the service results to the http response.
 type MainAPIRouter interface { 
-	TicketsBuyPut(http.ResponseWriter, *http.Request)
-	TicketsSearchGet(http.ResponseWriter, *http.Request)
+	BuyPut(http.ResponseWriter, *http.Request)
+	SearchGet(http.ResponseWriter, *http.Request)
 }
 // SeatAPIRouter defines the required methods for binding the api requests to a responses for the SeatAPI
 // The SeatAPIRouter implementation should parse necessary information from the http request,
@@ -79,8 +79,8 @@ type GameAPIServicer interface {
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
 type MainAPIServicer interface { 
-	TicketsBuyPut(context.Context, TicketsBuyPutRequest) (ImplResponse, error)
-	TicketsSearchGet(context.Context, string, string, int32, int32, int32, int32) (ImplResponse, error)
+	BuyPut(context.Context, BuyPutRequest) (ImplResponse, error)
+	SearchGet(context.Context, string, string, int32, int32, int32, int32) (ImplResponse, error)
 }
 
 
