@@ -1,0 +1,4 @@
+package: main
+generate:
+  strict-server: true
+  echo-server: true
