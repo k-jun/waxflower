@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  editor:
+    image: swaggerapi/swagger-editor
+    ports:
+      - "80:8080"
+    volumes:
+      - ./:/tmp/
+    environment:
+      SWAGGER_FILE: "/tmp/docs/swagger.yaml"
+  # app:
+  #   image: golang:1.18
+  #   ports:
+  #     - "8080:8080"
+  #   tty: true
+  #   working_dir: /src/
+  #   volumes:
+  #     - ./app/:/src/
+  db:
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./scripts:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+      MYSQL_DATABASE: mydb
+
+volumes:
+  mysql-data:
+    name: mysql80_volume
+      
+
+
+

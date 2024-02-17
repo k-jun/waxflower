@@ -10,8 +10,6 @@ info:
 servers:
   - url: http://localhost:8080
 tags:
-  - name: main
-    description: What is essential is usually invisible to the eye
   - name: ticket
     description: Everything about ticket
   - name: user
@@ -21,73 +19,6 @@ tags:
   - name: seat
     description: Everything about seat
 paths:
-  /search:
-    get:
-      tags:
-        - main
-      parameters:
-        - in: query
-          name: dateBefore
-          schema:
-            type: string
-            format: date
-            example: 2012-04-01
-          required: true
-        - in: query
-          name: dateAfter
-          schema:
-            type: string
-            format: date
-            example: 2020-07-28
-          required: true
-        - in: query
-          name: secFrom
-          schema:
-            type: integer
-            example: 5
-        - in: query
-          name: secTo
-          schema:
-            type: integer
-            example: 9
-        - in: query
-          name: priceMin
-          schema:
-            type: integer
-            example: 3000
-        - in: query
-          name: priceMax
-          schema:
-            type: integer
-            example: 6000
-      responses:
-        200:
-          $ref: "#/components/responses/200Tickets"
-        400:
-          $ref: "#/components/responses/400"
-  /buy:
-    put:
-      tags:
-        - main
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                  format: uuid
-                  example: 9d7efaa0-9ae4-41c2-9d13-d8f3d009e44f
-                userId:
-                  type: string
-                  format: uuid
-                  example: ffec5bda-dee6-4c8c-a8a0-0dd0554261cc
-      responses:
-        200:
-          $ref: "#/components/responses/200Ticket"
-        400:
-          $ref: "#/components/responses/400"
   /users:
     post:
       tags:
@@ -457,31 +388,31 @@ components:
     200User:
       description: OK
       content:
-        text/plain:
+        application/json:
           schema:
             $ref: '#/components/schemas/User'
     200Game:
       description: OK
       content:
-        text/plain:
+        application/json:
           schema:
             $ref: '#/components/schemas/Game'
     200Seat:
       description: OK
       content:
-        text/plain:
+        application/json:
           schema:
             $ref: '#/components/schemas/Seat'
     200Ticket:
       description: OK
       content:
-        text/plain:
+        application/json:
           schema:
             $ref: '#/components/schemas/Ticket'
     200Tickets:
       description: OK
       content:
-        text/plain:
+        application/json:
           schema:
             type: array
             items:
