@@ -1,17 +1,8 @@
 package registry
 
 import (
-	"github.com/jmoiron/sqlx"
 	"github.com/k-jun/waxflower/model"
 )
-
-type MySQL struct {
-	db *sqlx.DB
-}
-
-func NewMySQL(db *sqlx.DB) IRegistry {
-	return &MySQL{db}
-}
 
 func (sql *MySQL) SelectUser(u *model.User) (*model.User, error) {
 	err := sql.db.Get(u, "SELECT id, email FROM users WHERE id = ?", u.Id)

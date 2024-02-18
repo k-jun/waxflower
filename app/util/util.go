@@ -25,6 +25,16 @@ func SelectUser(t *testing.T, db *sqlx.DB, user *model.User) *model.User {
 	return user
 }
 
+func InsertGame(t *testing.T, db *sqlx.DB, g *model.Game) *model.Game {
+	_, err := db.Exec("INSERT games(id, date, time) VALUES(?, ?, ?)",
+		g.Id, g.Date, g.Time,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return g
+}
+
 func DeleteAll(db *sqlx.DB) {
 	_ = db.MustExec("DELETE FROM users")
 	_ = db.MustExec("DELETE FROM games")
