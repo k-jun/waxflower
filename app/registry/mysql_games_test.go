@@ -10,6 +10,9 @@ import (
 )
 
 func TestMySQL_SelectGame(t *testing.T) {
+	t.Cleanup(func() {
+		util.DeleteAll(db)
+	})
 	type fields struct {
 		db *sqlx.DB
 		g  *model.Game
@@ -80,6 +83,72 @@ func TestMySQL_SelectGame(t *testing.T) {
 			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("MySQL.SelectGame() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestMySQL_InsertGame(t *testing.T) {
+	t.Cleanup(func() {
+		util.DeleteAll(db)
+	})
+	type fields struct {
+		db *sqlx.DB
+	}
+	type args struct {
+		g *model.Game
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		want    *model.Game
+		wantErr bool
+	}{
+		{
+			name:   "OK: InsertGame",
+			fields: fields{db: db},
+			args: args{g: &model.Game{
+				Id:   "081f575d-381f-459e-b5a3-fb81aaf2bb3b",
+				Date: "2004-06-07",
+				Time: "20:47:00",
+			}},
+			want: &model.Game{
+				Id:   "081f575d-381f-459e-b5a3-fb81aaf2bb3b",
+				Date: "2004-06-07",
+				Time: "20:47:00",
+			},
+		},
+		{
+			name:   "NG: InsertGame",
+			fields: fields{db: db},
+			args: args{g: &model.Game{
+				Id:   "081f575d-381f-459e-b5a3-fb81aaf2bb3b",
+				Date: "2004-06-07",
+				Time: "20:47:00",
+			}},
+			want: &model.Game{
+				Id:   "081f575d-381f-459e-b5a3-fb81aaf2bb3b",
+				Date: "2004-06-07",
+				Time: "20:47:00",
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			sql := &MySQL{
+				db: tt.fields.db,
+			}
+			_, err := sql.InsertGame(tt.args.g)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("MySQL.InsertGame() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			got := util.SelectGame(t, db, tt.args.g)
+
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("MySQL.InsertGame() = %v, want %v", got, tt.want)
 			}
 		})
 	}

@@ -6,7 +6,6 @@ import (
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	"github.com/k-jun/waxflower/util"
 )
 
 var (
@@ -21,10 +20,4 @@ var (
 
 func TestMain(m *testing.M) {
 	os.Exit(m.Run())
-}
-
-func TestDeleteAll(t *testing.T) {
-	t.Cleanup(func() {
-		util.DeleteAll(db)
-	})
 }

@@ -10,6 +10,9 @@ import (
 )
 
 func TestMySQL_SelectUser(t *testing.T) {
+	t.Cleanup(func() {
+		util.DeleteAll(db)
+	})
 	type fields struct {
 		db   *sqlx.DB
 		user *model.User
@@ -78,6 +81,9 @@ func TestMySQL_SelectUser(t *testing.T) {
 }
 
 func TestMySQL_InsertUser(t *testing.T) {
+	t.Cleanup(func() {
+		util.DeleteAll(db)
+	})
 	type fields struct {
 		db *sqlx.DB
 	}

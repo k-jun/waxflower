@@ -10,8 +10,9 @@ func (sql *MySQL) SelectGame(g *model.Game) (*model.Game, error) {
 }
 
 func (sql *MySQL) InsertGame(g *model.Game) (*model.Game, error) {
-	_, err := sql.db.Exec("INSERT Games(id, email) VALUES(?, ?)") // u.Id, u.Email,
-
+	_, err := sql.db.Exec("INSERT games(id, date, time) VALUES(?, ?, ?)",
+		g.Id, g.Date, g.Time,
+	)
 	return g, err
 }
 
