@@ -21,11 +21,10 @@ type IRegistry interface {
 	UpdateSeat(*model.Seat) (*model.Seat, error)
 	DeleteSeat(*model.Seat) (*model.Seat, error)
 
-	// SelectTicket(model.Ticket) (model.Ticket, error)
-	// InsertTicket(model.Ticket) (model.Ticket, error)
-	// UpdateTicket(model.Ticket) (model.Ticket, error)
-	// DeleteTicket(model.Ticket) (model.Ticket, error)
-
+	SelectTicket(*model.Ticket) (*model.Ticket, error)
+	InsertTicket(*model.Ticket) (*model.Ticket, error)
+	UpdateTicket(*model.Ticket) (*model.Ticket, error)
+	DeleteTicket(*model.Ticket) (*model.Ticket, error)
 }
 
 type MySQL struct {

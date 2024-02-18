@@ -88,6 +88,9 @@ func TestMySQL_SelectSeat(t *testing.T) {
 }
 
 func TestMySQL_InsertSeat(t *testing.T) {
+	t.Cleanup(func() {
+		util.DeleteAll(db)
+	})
 	type fields struct {
 		db *sqlx.DB
 	}

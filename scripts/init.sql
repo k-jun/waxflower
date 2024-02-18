@@ -11,14 +11,14 @@ CREATE TABLE games (
 
 CREATE TABLE seats (
     id CHAR(36) PRIMARY KEY,
-    sec INT NOT NULL
+    sec INT NOT NULL,
     `row` CHAR(2) NOT NULL,
-    col INT NOT NULL,
+    col INT NOT NULL
 );
 
 CREATE TABLE tickets (
     id CHAR(36) PRIMARY KEY,
-    price DECIMAL(10, 2) NOT NULL,
+    price INT NOT NULL,
     user_id CHAR(36) NOT NULL,
     game_id CHAR(36) NOT NULL,
     seat_id CHAR(36) NOT NULL,

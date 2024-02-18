@@ -61,9 +61,29 @@ func SelectSeat(t *testing.T, db *sqlx.DB, s *model.Seat) *model.Seat {
 	return s
 }
 
+func InsertTicket(t *testing.T, db *sqlx.DB, ti *model.Ticket) *model.Ticket {
+	_, err := db.Exec("INSERT tickets(id, price, user_id, game_id, seat_id) VALUES(?, ?, ?, ?, ?)",
+		ti.Id, ti.Price, ti.UserId, ti.GameId, ti.SeatId,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return ti
+}
+
+func SelectTicket(t *testing.T, db *sqlx.DB, ti *model.Ticket) *model.Ticket {
+	_, err := db.Exec("INSERT tickets(id, price, user_id, game_id, seat_id) VALUES(?, ?, ?, ?, ?)",
+		ti.Id, ti.Price, ti.UserId, ti.GameId, ti.SeatId,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return ti
+}
+
 func DeleteAll(db *sqlx.DB) {
+	_ = db.MustExec("DELETE FROM tickets")
 	_ = db.MustExec("DELETE FROM users")
 	_ = db.MustExec("DELETE FROM games")
 	_ = db.MustExec("DELETE FROM seats")
-	_ = db.MustExec("DELETE FROM tickets")
 }
