@@ -33,8 +33,8 @@ func TestMySQL_SelectSeat(t *testing.T) {
 				db: db,
 				s: &model.Seat{
 					Id:  "92d0f7d5-2a0b-4c9b-87b6-8abd9f189a80",
-					Col: 19,
 					Row: "AA",
+					Col: 19,
 					Sec: 9,
 				},
 			},
@@ -43,8 +43,8 @@ func TestMySQL_SelectSeat(t *testing.T) {
 			}},
 			want: &model.Seat{
 				Id:  "92d0f7d5-2a0b-4c9b-87b6-8abd9f189a80",
-				Col: 19,
 				Row: "AA",
+				Col: 19,
 				Sec: 9,
 			},
 		},
@@ -54,8 +54,8 @@ func TestMySQL_SelectSeat(t *testing.T) {
 				db: db,
 				s: &model.Seat{
 					Id:  "d355343f-44e1-4927-a4ea-dae1026f3ab5",
-					Col: 19,
 					Row: "AA",
+					Col: 19,
 					Sec: 9,
 				},
 			},
@@ -82,6 +82,72 @@ func TestMySQL_SelectSeat(t *testing.T) {
 			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("MySQL.SelectSeat() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestMySQL_InsertSeat(t *testing.T) {
+	type fields struct {
+		db *sqlx.DB
+	}
+	type args struct {
+		s *model.Seat
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		want    *model.Seat
+		wantErr bool
+	}{
+		{
+			name:   "OK: InsertSeat",
+			fields: fields{db: db},
+			args: args{s: &model.Seat{
+				Id:  "302025e5-628e-41f8-8afc-f5ba13d397ab",
+				Row: "AA",
+				Col: 10,
+				Sec: 19,
+			}},
+			want: &model.Seat{
+				Id:  "302025e5-628e-41f8-8afc-f5ba13d397ab",
+				Row: "AA",
+				Col: 10,
+				Sec: 19,
+			},
+		},
+		{
+			name:   "NG: InsertSeat",
+			fields: fields{db: db},
+			args: args{s: &model.Seat{
+				Id:  "302025e5-628e-41f8-8afc-f5ba13d397ab",
+				Row: "AA",
+				Col: 10,
+				Sec: 19,
+			}},
+			want: &model.Seat{
+				Id:  "302025e5-628e-41f8-8afc-f5ba13d397ab",
+				Row: "AA",
+				Col: 10,
+				Sec: 19,
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			sql := &MySQL{
+				db: tt.fields.db,
+			}
+			_, err := sql.InsertSeat(tt.args.s)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("MySQL.InsertSeat() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			got := util.SelectSeat(t, db, tt.args.s)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("MySQL.InsertSeat() = %v, want %v", got, tt.want)
 			}
 		})
 	}

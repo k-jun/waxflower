@@ -7,9 +7,9 @@ type Game struct {
 }
 type Seat struct {
 	Id  string
-	Sec int32
-	Col int32
 	Row string
+	Col int32
+	Sec int32
 }
 type Ticket struct {
 	Id     string

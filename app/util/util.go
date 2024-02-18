@@ -44,9 +44,17 @@ func SelectGame(t *testing.T, db *sqlx.DB, g *model.Game) *model.Game {
 }
 
 func InsertSeat(t *testing.T, db *sqlx.DB, s *model.Seat) *model.Seat {
-	_, err := db.Exec("INSERT seats(id, col, `row`, sec) VALUES(?, ?, ?, ?)",
-		s.Id, s.Col, s.Row, s.Sec,
+	_, err := db.Exec("INSERT seats(id, `row`, col, sec) VALUES(?, ?, ?, ?)",
+		s.Id, s.Row, s.Col, s.Sec,
 	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return s
+}
+
+func SelectSeat(t *testing.T, db *sqlx.DB, s *model.Seat) *model.Seat {
+	err := db.Get(s, "SELECT id, `row`, col, sec FROM seats WHERE id = ?", s.Id)
 	if err != nil {
 		t.Fatal(err)
 	}
