@@ -10,6 +10,8 @@ info:
 servers:
 - url: http://localhost:8080
 tags:
+- description: Main Contents
+  name: main
 - description: Everything about ticket
   name: ticket
 - description: Everything about user
@@ -19,6 +21,15 @@ tags:
 - description: Everything about seat
   name: seat
 paths:
+  /reset:
+    get:
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - main
   /users:
     post:
       requestBody:

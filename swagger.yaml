@@ -10,6 +10,8 @@ info:
 servers:
   - url: http://localhost:8080
 tags:
+  - name: main
+    description: Main Contents
   - name: ticket
     description: Everything about ticket
   - name: user
@@ -19,6 +21,15 @@ tags:
   - name: seat
     description: Everything about seat
 paths:
+  /reset:
+    get:
+      tags:
+        - main
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        500:
+          $ref: "#/components/responses/500"
   /users:
     post:
       tags:

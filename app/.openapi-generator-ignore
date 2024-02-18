@@ -24,3 +24,9 @@
 
 go.mod
 go.sum
+go/api_game*.go
+go/api_seat*.go
+go/api_user*.go
+go/api_ticket*.go
+main.go
+README.md

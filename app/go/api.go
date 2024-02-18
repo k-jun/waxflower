@@ -26,6 +26,12 @@ type GameAPIRouter interface {
 	GamesGameIdPut(http.ResponseWriter, *http.Request)
 	GamesPost(http.ResponseWriter, *http.Request)
 }
+// MainAPIRouter defines the required methods for binding the api requests to a responses for the MainAPI
+// The MainAPIRouter implementation should parse necessary information from the http request,
+// pass the data to a MainAPIServicer to perform the required actions, then write the service results to the http response.
+type MainAPIRouter interface { 
+	ResetGet(http.ResponseWriter, *http.Request)
+}
 // SeatAPIRouter defines the required methods for binding the api requests to a responses for the SeatAPI
 // The SeatAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a SeatAPIServicer to perform the required actions, then write the service results to the http response.
@@ -64,6 +70,15 @@ type GameAPIServicer interface {
 	GamesGameIdGet(context.Context, string) (ImplResponse, error)
 	GamesGameIdPut(context.Context, string, Game) (ImplResponse, error)
 	GamesPost(context.Context, Game) (ImplResponse, error)
+}
+
+
+// MainAPIServicer defines the api actions for the MainAPI service
+// This interface intended to stay up to date with the openapi yaml used to generate it,
+// while the service implementation can be ignored with the .openapi-generator-ignore file
+// and updated with the logic required for the API.
+type MainAPIServicer interface { 
+	ResetGet(context.Context) (ImplResponse, error)
 }
 
 
