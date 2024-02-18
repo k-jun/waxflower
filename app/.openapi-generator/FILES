@@ -1,7 +1,6 @@
 Dockerfile
 README.md
 api/openapi.yaml
-go.mod
 go/api.go
 go/api_game.go
 go/api_game_service.go
