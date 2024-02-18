@@ -43,6 +43,16 @@ func SelectGame(t *testing.T, db *sqlx.DB, g *model.Game) *model.Game {
 	return g
 }
 
+func InsertSeat(t *testing.T, db *sqlx.DB, s *model.Seat) *model.Seat {
+	_, err := db.Exec("INSERT seats(id, col, `row`, sec) VALUES(?, ?, ?, ?)",
+		s.Id, s.Col, s.Row, s.Sec,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return s
+}
+
 func DeleteAll(db *sqlx.DB) {
 	_ = db.MustExec("DELETE FROM users")
 	_ = db.MustExec("DELETE FROM games")

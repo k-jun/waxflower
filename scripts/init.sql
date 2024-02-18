@@ -12,7 +12,7 @@ CREATE TABLE games (
 CREATE TABLE seats (
     id CHAR(36) PRIMARY KEY,
     col INT NOT NULL,
-    `row` INT NOT NULL,
+    `row` CHAR(2) NOT NULL,
     sec INT NOT NULL
 );
 
