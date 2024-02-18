@@ -17,6 +17,14 @@ func InsertUser(t *testing.T, db *sqlx.DB, user *model.User) *model.User {
 	return user
 }
 
+func SelectUser(t *testing.T, db *sqlx.DB, user *model.User) *model.User {
+	err := db.Get(user, "SELECT id, email FROM users WHERE id = ?", user.Id)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return user
+}
+
 func DeleteAll(db *sqlx.DB) {
 	_ = db.MustExec("DELETE FROM users")
 	_ = db.MustExec("DELETE FROM games")

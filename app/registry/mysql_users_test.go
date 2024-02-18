@@ -4,10 +4,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/k-jun/waxflower/util"
-
 	"github.com/jmoiron/sqlx"
 	"github.com/k-jun/waxflower/model"
+	"github.com/k-jun/waxflower/util"
 )
 
 func TestMySQL_SelectUser(t *testing.T) {
@@ -73,6 +72,69 @@ func TestMySQL_SelectUser(t *testing.T) {
 			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("MySQL.SelectUser() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestMySQL_InsertUser(t *testing.T) {
+	type fields struct {
+		db *sqlx.DB
+	}
+	type args struct {
+		u *model.User
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		want    *model.User
+		wantErr bool
+	}{
+		{
+			name:   "OK: InsertUser",
+			fields: fields{db: db},
+			args: args{
+				u: &model.User{
+					Id:    "683ec742-2c3a-462e-bd1a-9e43878b294a",
+					Email: "zacharycarter@example.com",
+				},
+			},
+			want: &model.User{
+				Id:    "683ec742-2c3a-462e-bd1a-9e43878b294a",
+				Email: "zacharycarter@example.com",
+			},
+		},
+		{
+			name:   "NG: InsertUser",
+			fields: fields{db: db},
+			args: args{
+				u: &model.User{
+					Id:    "683ec742-2c3a-462e-bd1a-9e43878b294a",
+					Email: "zacharycarter@example.com",
+				},
+			},
+			want: &model.User{
+				Id:    "683ec742-2c3a-462e-bd1a-9e43878b294a",
+				Email: "zacharycarter@example.com",
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			sql := &MySQL{
+				db: tt.fields.db,
+			}
+			_, err := sql.InsertUser(tt.args.u)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("MySQL.InsertUser() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+
+			got := util.SelectUser(t, db, tt.args.u)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("MySQL.InsertUser() = %v, want %v", got, tt.want)
 			}
 		})
 	}

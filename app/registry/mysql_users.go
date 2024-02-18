@@ -18,8 +18,11 @@ func (sql *MySQL) SelectUser(u *model.User) (*model.User, error) {
 	return u, err
 }
 
-func (sql *MySQL) InsertUser(_ *model.User) (*model.User, error) {
-	panic("not implemented") // TODO: Implement
+func (sql *MySQL) InsertUser(u *model.User) (*model.User, error) {
+	_, err := sql.db.Exec("INSERT users(id, email) VALUES(?, ?)",
+		u.Id, u.Email,
+	)
+	return u, err
 }
 
 func (sql *MySQL) UpdateUser(_ *model.User) (*model.User, error) {
