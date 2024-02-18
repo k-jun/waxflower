@@ -25,6 +25,8 @@ type IRegistry interface {
 	InsertTicket(*model.Ticket) (*model.Ticket, error)
 	UpdateTicket(*model.Ticket) (*model.Ticket, error)
 	DeleteTicket(*model.Ticket) (*model.Ticket, error)
+
+	Reset() error
 }
 
 type MySQL struct {
@@ -33,4 +35,33 @@ type MySQL struct {
 
 func NewMySQL(db *sqlx.DB) IRegistry {
 	return &MySQL{db}
+}
+
+func (sql *MySQL) Reset() error {
+	tx, err := sql.db.Beginx()
+	defer tx.Commit()
+	if err != nil {
+		return err
+	}
+	_, err = sql.db.Exec("DELETE FROM tickets")
+	if err != nil {
+		_ = tx.Rollback()
+		return err
+	}
+	_, err = tx.Exec("DELETE FROM users")
+	if err != nil {
+		_ = tx.Rollback()
+		return err
+	}
+	_, err = tx.Exec("DELETE FROM games")
+	if err != nil {
+		_ = tx.Rollback()
+		return err
+	}
+	_, err = tx.Exec("DELETE FROM seats")
+	if err != nil {
+		_ = tx.Rollback()
+		return err
+	}
+	return err
 }
