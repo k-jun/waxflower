@@ -27,8 +27,8 @@ func main() {
 
 	conf := &mysql.Config{
 		Addr:   "127.0.0.1:3306",
-		User:   "root",
-		Passwd: "root",
+		User:   "mysql",
+		Passwd: "mysql",
 		DBName: "mydb",
 	}
 	db := sqlx.MustConnect("mysql", conf.FormatDSN())
