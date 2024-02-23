@@ -11,6 +11,7 @@
 package openapi
 
 import (
+	"encoding/json"
 	"net/http"
 	"strings"
 )
@@ -48,17 +49,99 @@ func NewMainAPIController(s MainAPIServicer, opts ...MainAPIOption) Router {
 // Routes returns all the api routes for the MainAPIController
 func (c *MainAPIController) Routes() Routes {
 	return Routes{
+		"ReservePut": Route{
+			strings.ToUpper("Put"),
+			"/reserve",
+			c.ReservePut,
+		},
 		"ResetGet": Route{
 			strings.ToUpper("Get"),
 			"/reset",
 			c.ResetGet,
 		},
+		"SearchGet": Route{
+			strings.ToUpper("Get"),
+			"/search",
+			c.SearchGet,
+		},
 	}
+}
+
+// ReservePut -
+func (c *MainAPIController) ReservePut(w http.ResponseWriter, r *http.Request) {
+	ticketReserveParam := TicketReserve{}
+	d := json.NewDecoder(r.Body)
+	d.DisallowUnknownFields()
+	if err := d.Decode(&ticketReserveParam); err != nil {
+		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
+		return
+	}
+	if err := AssertTicketReserveRequired(ticketReserveParam); err != nil {
+		c.errorHandler(w, r, err, nil)
+		return
+	}
+	if err := AssertTicketReserveConstraints(ticketReserveParam); err != nil {
+		c.errorHandler(w, r, err, nil)
+		return
+	}
+	result, err := c.service.ReservePut(r.Context(), ticketReserveParam)
+	// If an error occurred, encode the error with the status code
+	if err != nil {
+		c.errorHandler(w, r, err, &result)
+		return
+	}
+	// If no error, encode the body and the result code
+	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
 // ResetGet -
 func (c *MainAPIController) ResetGet(w http.ResponseWriter, r *http.Request) {
 	result, err := c.service.ResetGet(r.Context())
+	// If an error occurred, encode the error with the status code
+	if err != nil {
+		c.errorHandler(w, r, err, &result)
+		return
+	}
+	// If no error, encode the body and the result code
+	EncodeJSONResponse(result.Body, &result.Code, w)
+}
+
+// SearchGet -
+func (c *MainAPIController) SearchGet(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query()
+	var gameIdParam string
+	if query.Has("gameId") {
+		param := query.Get("gameId")
+
+		gameIdParam = param
+	} else {
+		c.errorHandler(w, r, &RequiredError{Field: "gameId"}, nil)
+		return
+	}
+	var seqParam int32
+	if query.Has("seq") {
+		param, err := parseNumericParameter[int32](
+			query.Get("seq"),
+			WithParse[int32](parseInt32),
+		)
+		if err != nil {
+			c.errorHandler(w, r, &ParsingError{Err: err}, nil)
+			return
+		}
+
+		seqParam = param
+	} else {
+		c.errorHandler(w, r, &RequiredError{Field: "seq"}, nil)
+		return
+	}
+	var userIdParam string
+	if query.Has("userId") {
+		param := query.Get("userId")
+
+		userIdParam = param
+	} else {
+	}
+	result, err := c.service.SearchGet(r.Context(), gameIdParam, seqParam, userIdParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

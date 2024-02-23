@@ -24,6 +24,7 @@
 
 go.mod
 go.sum
+go/api_main*.go
 go/api_game*.go
 go/api_seat*.go
 go/api_user*.go

@@ -56,20 +56,10 @@ func (c *TicketAPIController) Routes() Routes {
 			"/tickets",
 			c.TicketsPost,
 		},
-		"TicketsTicketIdDelete": Route{
-			strings.ToUpper("Delete"),
-			"/tickets/{ticketId}",
-			c.TicketsTicketIdDelete,
-		},
 		"TicketsTicketIdGet": Route{
 			strings.ToUpper("Get"),
 			"/tickets/{ticketId}",
 			c.TicketsTicketIdGet,
-		},
-		"TicketsTicketIdPut": Route{
-			strings.ToUpper("Put"),
-			"/tickets/{ticketId}",
-			c.TicketsTicketIdPut,
 		},
 	}
 }
@@ -101,24 +91,6 @@ func (c *TicketAPIController) TicketsPost(w http.ResponseWriter, r *http.Request
 	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
-// TicketsTicketIdDelete - 
-func (c *TicketAPIController) TicketsTicketIdDelete(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	ticketIdParam := params["ticketId"]
-	if ticketIdParam == "" {
-		c.errorHandler(w, r, &RequiredError{"ticketId"}, nil)
-		return
-	}
-	result, err := c.service.TicketsTicketIdDelete(r.Context(), ticketIdParam)
-	// If an error occurred, encode the error with the status code
-	if err != nil {
-		c.errorHandler(w, r, err, &result)
-		return
-	}
-	// If no error, encode the body and the result code
-	EncodeJSONResponse(result.Body, &result.Code, w)
-}
-
 // TicketsTicketIdGet - 
 func (c *TicketAPIController) TicketsTicketIdGet(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -128,39 +100,6 @@ func (c *TicketAPIController) TicketsTicketIdGet(w http.ResponseWriter, r *http.
 		return
 	}
 	result, err := c.service.TicketsTicketIdGet(r.Context(), ticketIdParam)
-	// If an error occurred, encode the error with the status code
-	if err != nil {
-		c.errorHandler(w, r, err, &result)
-		return
-	}
-	// If no error, encode the body and the result code
-	EncodeJSONResponse(result.Body, &result.Code, w)
-}
-
-// TicketsTicketIdPut - 
-func (c *TicketAPIController) TicketsTicketIdPut(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	ticketIdParam := params["ticketId"]
-	if ticketIdParam == "" {
-		c.errorHandler(w, r, &RequiredError{"ticketId"}, nil)
-		return
-	}
-	ticketParam := Ticket{}
-	d := json.NewDecoder(r.Body)
-	d.DisallowUnknownFields()
-	if err := d.Decode(&ticketParam); err != nil {
-		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
-		return
-	}
-	if err := AssertTicketRequired(ticketParam); err != nil {
-		c.errorHandler(w, r, err, nil)
-		return
-	}
-	if err := AssertTicketConstraints(ticketParam); err != nil {
-		c.errorHandler(w, r, err, nil)
-		return
-	}
-	result, err := c.service.TicketsTicketIdPut(r.Context(), ticketIdParam, ticketParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

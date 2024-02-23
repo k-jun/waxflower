@@ -30,6 +30,58 @@ paths:
           description: Internal Server Error
       tags:
       - main
+  /search:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: gameId
+        required: true
+        schema:
+          example: 94518720-e444-4b18-b6f7-034d8af654a5
+          format: uuid
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: seq
+        required: true
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: userId
+        required: false
+        schema:
+          example: e241f57c-0521-3caf-82ac-c1295eb32ac8
+          format: uuid
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Ticket'
+                type: array
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - main
+  /reserve:
+    put:
+      requestBody:
+        $ref: '#/components/requestBodies/TicketReserve'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+      tags:
+      - main
   /users:
     post:
       requestBody:
@@ -42,24 +94,6 @@ paths:
       tags:
       - user
   /users/{userId}:
-    delete:
-      parameters:
-      - explode: false
-        in: path
-        name: userId
-        required: true
-        schema:
-          example: e241f57c-0521-3caf-82ac-c1295eb32ac8
-          format: uuid
-          type: string
-        style: simple
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad request
-      tags:
-      - user
     get:
       parameters:
       - explode: false
@@ -82,26 +116,6 @@ paths:
           description: Bad request
       tags:
       - user
-    put:
-      parameters:
-      - explode: false
-        in: path
-        name: userId
-        required: true
-        schema:
-          example: e241f57c-0521-3caf-82ac-c1295eb32ac8
-          format: uuid
-          type: string
-        style: simple
-      requestBody:
-        $ref: '#/components/requestBodies/User'
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad request
-      tags:
-      - user
   /games:
     post:
       requestBody:
@@ -114,24 +128,6 @@ paths:
       tags:
       - game
   /games/{gameId}:
-    delete:
-      parameters:
-      - explode: false
-        in: path
-        name: gameId
-        required: true
-        schema:
-          example: 94518720-e444-4b18-b6f7-034d8af654a5
-          format: uuid
-          type: string
-        style: simple
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad request
-      tags:
-      - game
     get:
       parameters:
       - explode: false
@@ -143,30 +139,6 @@ paths:
           format: uuid
           type: string
         style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Game'
-          description: OK
-        "400":
-          description: Bad request
-      tags:
-      - game
-    put:
-      parameters:
-      - explode: false
-        in: path
-        name: gameId
-        required: true
-        schema:
-          example: 94518720-e444-4b18-b6f7-034d8af654a5
-          format: uuid
-          type: string
-        style: simple
-      requestBody:
-        $ref: '#/components/requestBodies/Game'
       responses:
         "200":
           content:
@@ -190,24 +162,6 @@ paths:
       tags:
       - seat
   /seats/{seatId}:
-    delete:
-      parameters:
-      - explode: false
-        in: path
-        name: seatId
-        required: true
-        schema:
-          example: db10fba1-c46e-4712-a8c7-cc0991df54f4
-          format: uuid
-          type: string
-        style: simple
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad request
-      tags:
-      - seat
     get:
       parameters:
       - explode: false
@@ -219,30 +173,6 @@ paths:
           format: uuid
           type: string
         style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Seat'
-          description: OK
-        "400":
-          description: Bad request
-      tags:
-      - seat
-    put:
-      parameters:
-      - explode: false
-        in: path
-        name: seatId
-        required: true
-        schema:
-          example: db10fba1-c46e-4712-a8c7-cc0991df54f4
-          format: uuid
-          type: string
-        style: simple
-      requestBody:
-        $ref: '#/components/requestBodies/Seat'
       responses:
         "200":
           content:
@@ -266,24 +196,6 @@ paths:
       tags:
       - ticket
   /tickets/{ticketId}:
-    delete:
-      parameters:
-      - explode: false
-        in: path
-        name: ticketId
-        required: true
-        schema:
-          example: a79b47aa-301b-3221-a323-5e63601b9615
-          format: uuid
-          type: string
-        style: simple
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad request
-      tags:
-      - ticket
     get:
       parameters:
       - explode: false
@@ -295,30 +207,6 @@ paths:
           format: uuid
           type: string
         style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ticket'
-          description: OK
-        "400":
-          description: Bad request
-      tags:
-      - ticket
-    put:
-      parameters:
-      - explode: false
-        in: path
-        name: ticketId
-        required: true
-        schema:
-          example: a79b47aa-301b-3221-a323-5e63601b9615
-          format: uuid
-          type: string
-        style: simple
-      requestBody:
-        $ref: '#/components/requestBodies/Ticket'
       responses:
         "200":
           content:
@@ -355,6 +243,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Ticket'
+      required: true
+    TicketReserve:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TicketReserve'
       required: true
   responses:
     "200User":
@@ -471,11 +365,17 @@ components:
       type: object
     Ticket:
       example:
-        gameId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        seat:
+          sec: 7
+          col: 57
+          id: db10fba1-c46e-4712-a8c7-cc0991df54f4
+          row: AZ
+        game:
+          date: 1999-07-10T00:00:00.000+00:00
+          id: 94518720-e444-4b18-b6f7-034d8af654a5
+          time: "49500"
         price: 5000
-        seatId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         id: a79b47aa-301b-3221-a323-5e63601b9615
-        userId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
       properties:
         id:
           example: a79b47aa-301b-3221-a323-5e63601b9615
@@ -485,18 +385,28 @@ components:
           example: 5000
           format: int64
           type: integer
+        game:
+          $ref: '#/components/schemas/Game'
+        seat:
+          $ref: '#/components/schemas/Seat'
+      required:
+      - game
+      - id
+      - price
+      - seat
+      type: object
+    TicketReserve:
+      example:
+        userId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        ticketId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
         userId:
           format: uuid
           type: string
-        gameId:
-          format: uuid
-          type: string
-        seatId:
+        ticketId:
           format: uuid
           type: string
       required:
-      - gameId
-      - id
-      - price
-      - seatId
+      - ticketId
+      - userId
       type: object

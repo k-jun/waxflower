@@ -21,43 +21,37 @@ import (
 // The GameAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a GameAPIServicer to perform the required actions, then write the service results to the http response.
 type GameAPIRouter interface { 
-	GamesGameIdDelete(http.ResponseWriter, *http.Request)
 	GamesGameIdGet(http.ResponseWriter, *http.Request)
-	GamesGameIdPut(http.ResponseWriter, *http.Request)
 	GamesPost(http.ResponseWriter, *http.Request)
 }
 // MainAPIRouter defines the required methods for binding the api requests to a responses for the MainAPI
 // The MainAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a MainAPIServicer to perform the required actions, then write the service results to the http response.
 type MainAPIRouter interface { 
+	ReservePut(http.ResponseWriter, *http.Request)
 	ResetGet(http.ResponseWriter, *http.Request)
+	SearchGet(http.ResponseWriter, *http.Request)
 }
 // SeatAPIRouter defines the required methods for binding the api requests to a responses for the SeatAPI
 // The SeatAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a SeatAPIServicer to perform the required actions, then write the service results to the http response.
 type SeatAPIRouter interface { 
 	SeatsPost(http.ResponseWriter, *http.Request)
-	SeatsSeatIdDelete(http.ResponseWriter, *http.Request)
 	SeatsSeatIdGet(http.ResponseWriter, *http.Request)
-	SeatsSeatIdPut(http.ResponseWriter, *http.Request)
 }
 // TicketAPIRouter defines the required methods for binding the api requests to a responses for the TicketAPI
 // The TicketAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a TicketAPIServicer to perform the required actions, then write the service results to the http response.
 type TicketAPIRouter interface { 
 	TicketsPost(http.ResponseWriter, *http.Request)
-	TicketsTicketIdDelete(http.ResponseWriter, *http.Request)
 	TicketsTicketIdGet(http.ResponseWriter, *http.Request)
-	TicketsTicketIdPut(http.ResponseWriter, *http.Request)
 }
 // UserAPIRouter defines the required methods for binding the api requests to a responses for the UserAPI
 // The UserAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a UserAPIServicer to perform the required actions, then write the service results to the http response.
 type UserAPIRouter interface { 
 	UsersPost(http.ResponseWriter, *http.Request)
-	UsersUserIdDelete(http.ResponseWriter, *http.Request)
 	UsersUserIdGet(http.ResponseWriter, *http.Request)
-	UsersUserIdPut(http.ResponseWriter, *http.Request)
 }
 
 
@@ -66,9 +60,7 @@ type UserAPIRouter interface {
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
 type GameAPIServicer interface { 
-	GamesGameIdDelete(context.Context, string) (ImplResponse, error)
 	GamesGameIdGet(context.Context, string) (ImplResponse, error)
-	GamesGameIdPut(context.Context, string, Game) (ImplResponse, error)
 	GamesPost(context.Context, Game) (ImplResponse, error)
 }
 
@@ -78,7 +70,9 @@ type GameAPIServicer interface {
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
 type MainAPIServicer interface { 
+	ReservePut(context.Context, TicketReserve) (ImplResponse, error)
 	ResetGet(context.Context) (ImplResponse, error)
+	SearchGet(context.Context, string, int32, string) (ImplResponse, error)
 }
 
 
@@ -88,9 +82,7 @@ type MainAPIServicer interface {
 // and updated with the logic required for the API.
 type SeatAPIServicer interface { 
 	SeatsPost(context.Context, Seat) (ImplResponse, error)
-	SeatsSeatIdDelete(context.Context, string) (ImplResponse, error)
 	SeatsSeatIdGet(context.Context, string) (ImplResponse, error)
-	SeatsSeatIdPut(context.Context, string, Seat) (ImplResponse, error)
 }
 
 
@@ -100,9 +92,7 @@ type SeatAPIServicer interface {
 // and updated with the logic required for the API.
 type TicketAPIServicer interface { 
 	TicketsPost(context.Context, Ticket) (ImplResponse, error)
-	TicketsTicketIdDelete(context.Context, string) (ImplResponse, error)
 	TicketsTicketIdGet(context.Context, string) (ImplResponse, error)
-	TicketsTicketIdPut(context.Context, string, Ticket) (ImplResponse, error)
 }
 
 
@@ -112,7 +102,5 @@ type TicketAPIServicer interface {
 // and updated with the logic required for the API.
 type UserAPIServicer interface { 
 	UsersPost(context.Context, User) (ImplResponse, error)
-	UsersUserIdDelete(context.Context, string) (ImplResponse, error)
 	UsersUserIdGet(context.Context, string) (ImplResponse, error)
-	UsersUserIdPut(context.Context, string, User) (ImplResponse, error)
 }

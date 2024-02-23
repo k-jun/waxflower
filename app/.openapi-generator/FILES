@@ -3,8 +3,6 @@ api/openapi.yaml
 go/api.go
 go/api_main.go
 go/api_main_service.go
-go/api_ticket.go
-go/api_ticket_service.go
 go/error.go
 go/helpers.go
 go/impl.go
@@ -12,5 +10,6 @@ go/logger.go
 go/model_game.go
 go/model_seat.go
 go/model_ticket.go
+go/model_ticket_reserve.go
 go/model_user.go
 go/routers.go

@@ -51,20 +51,10 @@ func NewGameAPIController(s GameAPIServicer, opts ...GameAPIOption) Router {
 // Routes returns all the api routes for the GameAPIController
 func (c *GameAPIController) Routes() Routes {
 	return Routes{
-		"GamesGameIdDelete": Route{
-			strings.ToUpper("Delete"),
-			"/games/{gameId}",
-			c.GamesGameIdDelete,
-		},
 		"GamesGameIdGet": Route{
 			strings.ToUpper("Get"),
 			"/games/{gameId}",
 			c.GamesGameIdGet,
-		},
-		"GamesGameIdPut": Route{
-			strings.ToUpper("Put"),
-			"/games/{gameId}",
-			c.GamesGameIdPut,
 		},
 		"GamesPost": Route{
 			strings.ToUpper("Post"),
@@ -72,24 +62,6 @@ func (c *GameAPIController) Routes() Routes {
 			c.GamesPost,
 		},
 	}
-}
-
-// GamesGameIdDelete - 
-func (c *GameAPIController) GamesGameIdDelete(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	gameIdParam := params["gameId"]
-	if gameIdParam == "" {
-		c.errorHandler(w, r, &RequiredError{"gameId"}, nil)
-		return
-	}
-	result, err := c.service.GamesGameIdDelete(r.Context(), gameIdParam)
-	// If an error occurred, encode the error with the status code
-	if err != nil {
-		c.errorHandler(w, r, err, &result)
-		return
-	}
-	// If no error, encode the body and the result code
-	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
 // GamesGameIdGet - 
@@ -101,39 +73,6 @@ func (c *GameAPIController) GamesGameIdGet(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	result, err := c.service.GamesGameIdGet(r.Context(), gameIdParam)
-	// If an error occurred, encode the error with the status code
-	if err != nil {
-		c.errorHandler(w, r, err, &result)
-		return
-	}
-	// If no error, encode the body and the result code
-	EncodeJSONResponse(result.Body, &result.Code, w)
-}
-
-// GamesGameIdPut - 
-func (c *GameAPIController) GamesGameIdPut(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	gameIdParam := params["gameId"]
-	if gameIdParam == "" {
-		c.errorHandler(w, r, &RequiredError{"gameId"}, nil)
-		return
-	}
-	gameParam := Game{}
-	d := json.NewDecoder(r.Body)
-	d.DisallowUnknownFields()
-	if err := d.Decode(&gameParam); err != nil {
-		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
-		return
-	}
-	if err := AssertGameRequired(gameParam); err != nil {
-		c.errorHandler(w, r, err, nil)
-		return
-	}
-	if err := AssertGameConstraints(gameParam); err != nil {
-		c.errorHandler(w, r, err, nil)
-		return
-	}
-	result, err := c.service.GamesGameIdPut(r.Context(), gameIdParam, gameParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

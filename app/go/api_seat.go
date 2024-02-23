@@ -56,20 +56,10 @@ func (c *SeatAPIController) Routes() Routes {
 			"/seats",
 			c.SeatsPost,
 		},
-		"SeatsSeatIdDelete": Route{
-			strings.ToUpper("Delete"),
-			"/seats/{seatId}",
-			c.SeatsSeatIdDelete,
-		},
 		"SeatsSeatIdGet": Route{
 			strings.ToUpper("Get"),
 			"/seats/{seatId}",
 			c.SeatsSeatIdGet,
-		},
-		"SeatsSeatIdPut": Route{
-			strings.ToUpper("Put"),
-			"/seats/{seatId}",
-			c.SeatsSeatIdPut,
 		},
 	}
 }
@@ -101,24 +91,6 @@ func (c *SeatAPIController) SeatsPost(w http.ResponseWriter, r *http.Request) {
 	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
-// SeatsSeatIdDelete - 
-func (c *SeatAPIController) SeatsSeatIdDelete(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	seatIdParam := params["seatId"]
-	if seatIdParam == "" {
-		c.errorHandler(w, r, &RequiredError{"seatId"}, nil)
-		return
-	}
-	result, err := c.service.SeatsSeatIdDelete(r.Context(), seatIdParam)
-	// If an error occurred, encode the error with the status code
-	if err != nil {
-		c.errorHandler(w, r, err, &result)
-		return
-	}
-	// If no error, encode the body and the result code
-	EncodeJSONResponse(result.Body, &result.Code, w)
-}
-
 // SeatsSeatIdGet - 
 func (c *SeatAPIController) SeatsSeatIdGet(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -128,39 +100,6 @@ func (c *SeatAPIController) SeatsSeatIdGet(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	result, err := c.service.SeatsSeatIdGet(r.Context(), seatIdParam)
-	// If an error occurred, encode the error with the status code
-	if err != nil {
-		c.errorHandler(w, r, err, &result)
-		return
-	}
-	// If no error, encode the body and the result code
-	EncodeJSONResponse(result.Body, &result.Code, w)
-}
-
-// SeatsSeatIdPut - 
-func (c *SeatAPIController) SeatsSeatIdPut(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	seatIdParam := params["seatId"]
-	if seatIdParam == "" {
-		c.errorHandler(w, r, &RequiredError{"seatId"}, nil)
-		return
-	}
-	seatParam := Seat{}
-	d := json.NewDecoder(r.Body)
-	d.DisallowUnknownFields()
-	if err := d.Decode(&seatParam); err != nil {
-		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
-		return
-	}
-	if err := AssertSeatRequired(seatParam); err != nil {
-		c.errorHandler(w, r, err, nil)
-		return
-	}
-	if err := AssertSeatConstraints(seatParam); err != nil {
-		c.errorHandler(w, r, err, nil)
-		return
-	}
-	result, err := c.service.SeatsSeatIdPut(r.Context(), seatIdParam, seatParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

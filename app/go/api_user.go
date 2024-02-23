@@ -56,20 +56,10 @@ func (c *UserAPIController) Routes() Routes {
 			"/users",
 			c.UsersPost,
 		},
-		"UsersUserIdDelete": Route{
-			strings.ToUpper("Delete"),
-			"/users/{userId}",
-			c.UsersUserIdDelete,
-		},
 		"UsersUserIdGet": Route{
 			strings.ToUpper("Get"),
 			"/users/{userId}",
 			c.UsersUserIdGet,
-		},
-		"UsersUserIdPut": Route{
-			strings.ToUpper("Put"),
-			"/users/{userId}",
-			c.UsersUserIdPut,
 		},
 	}
 }
@@ -101,24 +91,6 @@ func (c *UserAPIController) UsersPost(w http.ResponseWriter, r *http.Request) {
 	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
-// UsersUserIdDelete - 
-func (c *UserAPIController) UsersUserIdDelete(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	userIdParam := params["userId"]
-	if userIdParam == "" {
-		c.errorHandler(w, r, &RequiredError{"userId"}, nil)
-		return
-	}
-	result, err := c.service.UsersUserIdDelete(r.Context(), userIdParam)
-	// If an error occurred, encode the error with the status code
-	if err != nil {
-		c.errorHandler(w, r, err, &result)
-		return
-	}
-	// If no error, encode the body and the result code
-	EncodeJSONResponse(result.Body, &result.Code, w)
-}
-
 // UsersUserIdGet - 
 func (c *UserAPIController) UsersUserIdGet(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -128,39 +100,6 @@ func (c *UserAPIController) UsersUserIdGet(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	result, err := c.service.UsersUserIdGet(r.Context(), userIdParam)
-	// If an error occurred, encode the error with the status code
-	if err != nil {
-		c.errorHandler(w, r, err, &result)
-		return
-	}
-	// If no error, encode the body and the result code
-	EncodeJSONResponse(result.Body, &result.Code, w)
-}
-
-// UsersUserIdPut - 
-func (c *UserAPIController) UsersUserIdPut(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	userIdParam := params["userId"]
-	if userIdParam == "" {
-		c.errorHandler(w, r, &RequiredError{"userId"}, nil)
-		return
-	}
-	userParam := User{}
-	d := json.NewDecoder(r.Body)
-	d.DisallowUnknownFields()
-	if err := d.Decode(&userParam); err != nil {
-		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
-		return
-	}
-	if err := AssertUserRequired(userParam); err != nil {
-		c.errorHandler(w, r, err, nil)
-		return
-	}
-	if err := AssertUserConstraints(userParam); err != nil {
-		c.errorHandler(w, r, err, nil)
-		return
-	}
-	result, err := c.service.UsersUserIdPut(r.Context(), userIdParam, userParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
