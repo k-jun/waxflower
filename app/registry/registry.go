@@ -8,25 +8,19 @@ import (
 type IRegistry interface {
 	SelectUser(*model.User) (*model.User, error)
 	InsertUser(*model.User) (*model.User, error)
-	UpdateUser(*model.User) (*model.User, error)
-	DeleteUser(*model.User) (*model.User, error)
 
 	SelectGame(*model.Game) (*model.Game, error)
 	InsertGame(*model.Game) (*model.Game, error)
-	UpdateGame(*model.Game) (*model.Game, error)
-	DeleteGame(*model.Game) (*model.Game, error)
 
 	SelectSeat(*model.Seat) (*model.Seat, error)
 	InsertSeat(*model.Seat) (*model.Seat, error)
-	UpdateSeat(*model.Seat) (*model.Seat, error)
-	DeleteSeat(*model.Seat) (*model.Seat, error)
 
 	SelectTicket(*model.Ticket) (*model.Ticket, error)
 	InsertTicket(*model.Ticket) (*model.Ticket, error)
-	UpdateTicket(*model.Ticket) (*model.Ticket, error)
-	DeleteTicket(*model.Ticket) (*model.Ticket, error)
 
 	Reset() error
+	Search(*model.Ticket, *model.User) ([]*model.Ticket, error)
+	Reserve(*model.Ticket, *model.User) (*model.Ticket, error)
 }
 
 type MySQL struct {
@@ -64,4 +58,12 @@ func (sql *MySQL) Reset() error {
 		return err
 	}
 	return err
+}
+
+func (sqsl *MySQL) Search(_ *model.Ticket, _ *model.User) ([]*model.Ticket, error) {
+	panic("not implemented") // TODO: Implement
+}
+
+func (sqsl *MySQL) Reserve(_ *model.Ticket, _ *model.User) (*model.Ticket, error) {
+	panic("not implemented") // TODO: Implement
 }

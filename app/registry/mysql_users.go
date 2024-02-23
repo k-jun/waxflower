@@ -15,11 +15,3 @@ func (sql *MySQL) InsertUser(u *model.User) (*model.User, error) {
 	)
 	return u, err
 }
-
-func (sql *MySQL) UpdateUser(_ *model.User) (*model.User, error) {
-	panic("not implemented") // TODO: Implement
-}
-
-func (sql *MySQL) DeleteUser(_ *model.User) (*model.User, error) {
-	panic("not implemented") // TODO: Implement
-}

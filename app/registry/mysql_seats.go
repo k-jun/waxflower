@@ -15,11 +15,3 @@ func (sql *MySQL) InsertSeat(s *model.Seat) (*model.Seat, error) {
 	)
 	return s, err
 }
-
-func (sql *MySQL) UpdateSeat(_ *model.Seat) (*model.Seat, error) {
-	panic("not implemented") // TODO: Implement
-}
-
-func (sql *MySQL) DeleteSeat(_ *model.Seat) (*model.Seat, error) {
-	panic("not implemented") // TODO: Implement
-}

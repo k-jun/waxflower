@@ -15,11 +15,3 @@ func (sql *MySQL) InsertGame(g *model.Game) (*model.Game, error) {
 	)
 	return g, err
 }
-
-func (sql *MySQL) UpdateGame(_ *model.Game) (*model.Game, error) {
-	panic("not implemented") // TODO: Implement
-}
-
-func (sql *MySQL) DeleteGame(_ *model.Game) (*model.Game, error) {
-	panic("not implemented") // TODO: Implement
-}

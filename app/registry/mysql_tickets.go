@@ -15,11 +15,3 @@ func (sql *MySQL) InsertTicket(t *model.Ticket) (*model.Ticket, error) {
 	)
 	return t, err
 }
-
-func (sql *MySQL) UpdateTicket(_ *model.Ticket) (*model.Ticket, error) {
-	panic("not implemented") // TODO: Implement
-}
-
-func (sql *MySQL) DeleteTicket(_ *model.Ticket) (*model.Ticket, error) {
-	panic("not implemented") // TODO: Implement
-}
