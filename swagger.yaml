@@ -36,24 +36,17 @@ paths:
         - main
       parameters:
         - in: query
-          name: gameId
+          name: date
           required: true
           schema:
             type: string
-            format: uuid
-            example: 94518720-e444-4b18-b6f7-34d8af654a5
+            format: date
+            example: 1999-07-10
         - in: query
           name: seq
           required: true
           schema:
             type: integer
-        - in: query
-          name: userId
-          required: false
-          schema:
-            type: string
-            format: uuid
-            example: e241f57c-0521-3caf-82ac-c1295eb32ac8
       responses:
         200:
           $ref: "#/components/responses/200Tickets"

@@ -19,7 +19,7 @@ CREATE TABLE seats (
 CREATE TABLE tickets (
     id CHAR(36) PRIMARY KEY,
     price INT NOT NULL,
-    user_id CHAR(36) NOT NULL,
+    user_id CHAR(36) NULL,
     game_id CHAR(36) NOT NULL,
     seat_id CHAR(36) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),

@@ -72,7 +72,7 @@ type GameAPIServicer interface {
 type MainAPIServicer interface { 
 	ReservePut(context.Context, TicketReserve) (ImplResponse, error)
 	ResetGet(context.Context) (ImplResponse, error)
-	SearchGet(context.Context, string, int32, string) (ImplResponse, error)
+	SearchGet(context.Context, string, int32) (ImplResponse, error)
 }
 
 

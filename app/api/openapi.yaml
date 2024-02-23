@@ -35,11 +35,11 @@ paths:
       parameters:
       - explode: true
         in: query
-        name: gameId
+        name: date
         required: true
         schema:
-          example: 94518720-e444-4b18-b6f7-034d8af654a5
-          format: uuid
+          example: 1999-07-10
+          format: date
           type: string
         style: form
       - explode: true
@@ -48,15 +48,6 @@ paths:
         required: true
         schema:
           type: integer
-        style: form
-      - explode: true
-        in: query
-        name: userId
-        required: false
-        schema:
-          example: e241f57c-0521-3caf-82ac-c1295eb32ac8
-          format: uuid
-          type: string
         style: form
       responses:
         "200":

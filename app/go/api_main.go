@@ -109,13 +109,13 @@ func (c *MainAPIController) ResetGet(w http.ResponseWriter, r *http.Request) {
 // SearchGet -
 func (c *MainAPIController) SearchGet(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
-	var gameIdParam string
-	if query.Has("gameId") {
-		param := query.Get("gameId")
+	var dateParam string
+	if query.Has("date") {
+		param := string(query.Get("date"))
 
-		gameIdParam = param
+		dateParam = param
 	} else {
-		c.errorHandler(w, r, &RequiredError{Field: "gameId"}, nil)
+		c.errorHandler(w, r, &RequiredError{Field: "date"}, nil)
 		return
 	}
 	var seqParam int32
@@ -134,14 +134,7 @@ func (c *MainAPIController) SearchGet(w http.ResponseWriter, r *http.Request) {
 		c.errorHandler(w, r, &RequiredError{Field: "seq"}, nil)
 		return
 	}
-	var userIdParam string
-	if query.Has("userId") {
-		param := query.Get("userId")
-
-		userIdParam = param
-	} else {
-	}
-	result, err := c.service.SearchGet(r.Context(), gameIdParam, seqParam, userIdParam)
+	result, err := c.service.SearchGet(r.Context(), dateParam, seqParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
