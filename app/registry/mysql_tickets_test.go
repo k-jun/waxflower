@@ -14,9 +14,8 @@ func TestMySQL_SelectTicket(t *testing.T) {
 		util.DeleteAll(db)
 	})
 	type fields struct {
-		db    *sqlx.DB
-		t     *model.Ticket
-		email string
+		db *sqlx.DB
+		t  *model.Ticket
 	}
 	type args struct {
 		t *model.Ticket
@@ -33,23 +32,38 @@ func TestMySQL_SelectTicket(t *testing.T) {
 			fields: fields{
 				db: db,
 				t: &model.Ticket{
-					Id:     "2b98ca6e-f8ca-4b14-b9c7-ed4286b92cfd",
-					Price:  3000,
-					UserId: "4860e3a8-c77d-4e74-84bb-cb4522de8f31",
-					GameId: "c20e2ee6-948e-4ea4-a9af-b875d68b1f7c",
-					SeatId: "07b63277-ad69-484f-8618-ebfaa8893163",
+					Id:    "2b98ca6e-f8ca-4b14-b9c7-ed4286b92cfd",
+					Price: 3000,
+					Game: &model.Game{
+						Id:   "c20e2ee6-948e-4ea4-a9af-b875d68b1f7c",
+						Date: "2009-08-19",
+						Time: "14:26:40",
+					},
+					Seat: &model.Seat{
+						Id:  "07b63277-ad69-484f-8618-ebfaa8893163",
+						Sec: 1,
+						Row: "AA",
+						Col: 19,
+					},
 				},
-				email: "christopherdavis@example.net",
 			},
 			args: args{t: &model.Ticket{
 				Id: "2b98ca6e-f8ca-4b14-b9c7-ed4286b92cfd",
 			}},
 			want: &model.Ticket{
-				Id:     "2b98ca6e-f8ca-4b14-b9c7-ed4286b92cfd",
-				Price:  3000,
-				UserId: "4860e3a8-c77d-4e74-84bb-cb4522de8f31",
-				GameId: "c20e2ee6-948e-4ea4-a9af-b875d68b1f7c",
-				SeatId: "07b63277-ad69-484f-8618-ebfaa8893163",
+				Id:    "2b98ca6e-f8ca-4b14-b9c7-ed4286b92cfd",
+				Price: 3000,
+				Game: &model.Game{
+					Id:   "c20e2ee6-948e-4ea4-a9af-b875d68b1f7c",
+					Date: "2009-08-19",
+					Time: "14:26:40",
+				},
+				Seat: &model.Seat{
+					Id:  "07b63277-ad69-484f-8618-ebfaa8893163",
+					Sec: 1,
+					Row: "AA",
+					Col: 19,
+				},
 			},
 		},
 		{
@@ -57,19 +71,28 @@ func TestMySQL_SelectTicket(t *testing.T) {
 			fields: fields{
 				db: db,
 				t: &model.Ticket{
-					Id:     "570cba82-295f-4c1e-b9af-a545377991ef",
-					Price:  5000,
-					UserId: "be706b7e-17a1-4275-ae41-f831e0e47d7b",
-					GameId: "9c825a30-f598-499b-a2a8-6a8eec5042d4",
-					SeatId: "454214e9-2d02-4581-8590-b2869d418233",
+					Id:    "57806b1b-dfc2-4dec-b864-2e888db4219e",
+					Price: 5000,
+					Game: &model.Game{
+						Id:   "d5f46724-f189-4946-924d-19fcd51331b7",
+						Date: "1994-02-18",
+						Time: "04:19:41",
+					},
+					Seat: &model.Seat{
+						Id:  "1ca028ef-3d22-4f2b-9178-24c881abcaae",
+						Sec: 7,
+						Row: "BB",
+						Col: 29,
+					},
 				},
-				email: "teresasmith@example.net",
 			},
 			args: args{t: &model.Ticket{
-				Id: "9881c659-4095-4a32-b888-288105ed92cf",
+				Id: "d281e8e5-b004-40cb-9a5a-b1c6f8aac422",
 			}},
 			want: &model.Ticket{
-				Id: "9881c659-4095-4a32-b888-288105ed92cf",
+				Id:   "d281e8e5-b004-40cb-9a5a-b1c6f8aac422",
+				Game: &model.Game{},
+				Seat: &model.Seat{},
 			},
 			wantErr: true,
 		},
@@ -79,9 +102,8 @@ func TestMySQL_SelectTicket(t *testing.T) {
 			sql := &MySQL{
 				db: tt.fields.db,
 			}
-			_ = util.InsertUser(t, db, &model.User{Id: tt.fields.t.UserId, Email: tt.fields.email})
-			_ = util.InsertGame(t, db, &model.Game{Id: tt.fields.t.GameId, Date: "1999-05-18"})
-			_ = util.InsertSeat(t, db, &model.Seat{Id: tt.fields.t.SeatId})
+			_ = util.InsertGame(t, db, tt.fields.t.Game)
+			_ = util.InsertSeat(t, db, tt.fields.t.Seat)
 			_ = util.InsertTicket(t, db, tt.fields.t)
 
 			got, err := sql.SelectTicket(tt.args.t)
@@ -101,9 +123,8 @@ func TestMySQL_InsertTicket(t *testing.T) {
 		util.DeleteAll(db)
 	})
 	type fields struct {
-		db    *sqlx.DB
-		t     *model.Ticket
-		email string
+		db *sqlx.DB
+		t  *model.Ticket
 	}
 	type args struct {
 		t *model.Ticket
@@ -120,25 +141,39 @@ func TestMySQL_InsertTicket(t *testing.T) {
 			fields: fields{
 				db: db,
 				t: &model.Ticket{
-					UserId: "bb7e67f7-acda-447a-92c8-8f347c2d4020",
-					GameId: "25c955c9-9465-4083-bbc9-bdba4cda62a9",
-					SeatId: "bb3fa16b-237f-4c07-9b28-8548e46bf536",
+					Game: &model.Game{
+						Id:   "c6e2375e-e585-4771-913d-b5f5b4d870fe",
+						Date: "2017-01-14",
+						Time: "18:14:06",
+					},
+					Seat: &model.Seat{
+						Id:  "06c83a6f-afe0-43df-ae6b-387aaa57d935",
+						Sec: 3,
+						Row: "AX",
+						Col: 20,
+					},
 				},
-				email: "michelle48@example.com",
 			},
 			args: args{t: &model.Ticket{
-				Id:     "14a15b3e-1937-4d7d-a7fc-b3e1948dfc76",
-				Price:  5000,
-				UserId: "bb7e67f7-acda-447a-92c8-8f347c2d4020",
-				GameId: "25c955c9-9465-4083-bbc9-bdba4cda62a9",
-				SeatId: "bb3fa16b-237f-4c07-9b28-8548e46bf536",
+				Id:    "a92155fc-63d1-4e8b-b442-32435b2d3e56",
+				Price: 9000,
+				Game:  &model.Game{Id: "c6e2375e-e585-4771-913d-b5f5b4d870fe"},
+				Seat:  &model.Seat{Id: "06c83a6f-afe0-43df-ae6b-387aaa57d935"},
 			}},
 			want: &model.Ticket{
-				Id:     "14a15b3e-1937-4d7d-a7fc-b3e1948dfc76",
-				Price:  5000,
-				UserId: "bb7e67f7-acda-447a-92c8-8f347c2d4020",
-				GameId: "25c955c9-9465-4083-bbc9-bdba4cda62a9",
-				SeatId: "bb3fa16b-237f-4c07-9b28-8548e46bf536",
+				Id:    "a92155fc-63d1-4e8b-b442-32435b2d3e56",
+				Price: 9000,
+				Game: &model.Game{
+					Id:   "c6e2375e-e585-4771-913d-b5f5b4d870fe",
+					Date: "2017-01-14",
+					Time: "18:14:06",
+				},
+				Seat: &model.Seat{
+					Id:  "06c83a6f-afe0-43df-ae6b-387aaa57d935",
+					Sec: 3,
+					Row: "AX",
+					Col: 20,
+				},
 			},
 		},
 		{
@@ -146,25 +181,30 @@ func TestMySQL_InsertTicket(t *testing.T) {
 			fields: fields{
 				db: db,
 				t: &model.Ticket{
-					UserId: "3cb4baab-5d7f-42be-a3e2-98eeb9840575",
-					GameId: "c7d46e1e-ee93-4518-a359-db8f2f131276",
-					SeatId: "e28cbd18-95da-47da-939c-c96c0651308c",
+					Game: &model.Game{
+						Id:   "9ebc7d83-c4db-48a7-a93b-bb97e669f3ea",
+						Date: "1987-07-25",
+						Time: "14:44:06",
+					},
+					Seat: &model.Seat{
+						Id:  "ef3bdc8c-b7d9-4cb9-a0d7-1701c717d3b3",
+						Sec: 5,
+						Row: "XY",
+						Col: 89,
+					},
 				},
-				email: "kmartinez@example.com",
 			},
 			args: args{t: &model.Ticket{
-				Id:     "14a15b3e-1937-4d7d-a7fc-b3e1948dfc76",
-				Price:  5000,
-				UserId: "bb7e67f7-acda-447a-92c8-8f347c2d4020",
-				GameId: "25c955c9-9465-4083-bbc9-bdba4cda62a9",
-				SeatId: "bb3fa16b-237f-4c07-9b28-8548e46bf536",
+				Id:    "96ea1bcd-f1ed-4f0b-aaee-f80893cb6f59",
+				Price: 10000,
+				Game:  &model.Game{Id: "5be44684-4f4c-4d24-bbf6-b60deab57d1f"},
+				Seat:  &model.Seat{Id: "0901a863-8048-497e-ae7f-a34266585f4f"},
 			}},
 			want: &model.Ticket{
-				Id:     "14a15b3e-1937-4d7d-a7fc-b3e1948dfc76",
-				Price:  5000,
-				UserId: "bb7e67f7-acda-447a-92c8-8f347c2d4020",
-				GameId: "25c955c9-9465-4083-bbc9-bdba4cda62a9",
-				SeatId: "bb3fa16b-237f-4c07-9b28-8548e46bf536",
+				Id:    "96ea1bcd-f1ed-4f0b-aaee-f80893cb6f59",
+				Price: 10000,
+				Game:  &model.Game{Id: "5be44684-4f4c-4d24-bbf6-b60deab57d1f"},
+				Seat:  &model.Seat{Id: "0901a863-8048-497e-ae7f-a34266585f4f"},
 			},
 			wantErr: true,
 		},
@@ -174,14 +214,15 @@ func TestMySQL_InsertTicket(t *testing.T) {
 			sql := &MySQL{
 				db: tt.fields.db,
 			}
-			_ = util.InsertUser(t, db, &model.User{Id: tt.fields.t.UserId, Email: tt.fields.email})
-			_ = util.InsertGame(t, db, &model.Game{Id: tt.fields.t.GameId, Date: "1999-05-18"})
-			_ = util.InsertSeat(t, db, &model.Seat{Id: tt.fields.t.SeatId})
-			got, err := sql.InsertTicket(tt.args.t)
+			_ = util.InsertGame(t, db, tt.fields.t.Game)
+			_ = util.InsertSeat(t, db, tt.fields.t.Seat)
+
+			_, err := sql.InsertTicket(tt.args.t)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("MySQL.InsertTicket() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
+			got := util.SelectTicket(t, db, tt.args.t)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("MySQL.InsertTicket() = %v, want %v", got, tt.want)
 			}

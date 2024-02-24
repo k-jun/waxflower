@@ -12,11 +12,11 @@ type Seat struct {
 	Sec int32
 }
 type Ticket struct {
-	Id     string
-	Price  int64
-	UserId string `db:"user_id"`
-	GameId string `db:"game_id"`
-	SeatId string `db:"seat_id"`
+	Id    string
+	Price int64
+	Seat  *Seat
+	User  *User
+	Game  *Game
 }
 type User struct {
 	Id    string

@@ -62,8 +62,8 @@ func SelectSeat(t *testing.T, db *sqlx.DB, s *model.Seat) *model.Seat {
 }
 
 func InsertTicket(t *testing.T, db *sqlx.DB, ti *model.Ticket) *model.Ticket {
-	_, err := db.Exec("INSERT tickets(id, price, user_id, game_id, seat_id) VALUES(?, ?, ?, ?, ?)",
-		ti.Id, ti.Price, ti.UserId, ti.GameId, ti.SeatId,
+	_, err := db.Exec("INSERT tickets(id, price, game_id, seat_id) VALUES(?, ?, ?, ?)",
+		ti.Id, ti.Price, ti.Game.Id, ti.Seat.Id,
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -72,12 +72,16 @@ func InsertTicket(t *testing.T, db *sqlx.DB, ti *model.Ticket) *model.Ticket {
 }
 
 func SelectTicket(t *testing.T, db *sqlx.DB, ti *model.Ticket) *model.Ticket {
-	_, err := db.Exec("INSERT tickets(id, price, user_id, game_id, seat_id) VALUES(?, ?, ?, ?, ?)",
-		ti.Id, ti.Price, ti.UserId, ti.GameId, ti.SeatId,
-	)
-	if err != nil {
-		t.Fatal(err)
-	}
+	_ = db.Get(ti, `
+SELECT
+  tickets.id as "id", tickets.price as "price",
+	seats.id as "seat.id", seats.sec as "seat.sec", seats.col as "seat.col", seats.row as "seat.row",
+	games.id as "game.id", games.date as "game.date", games.time as "game.time"
+FROM tickets
+	LEFT JOIN seats ON tickets.seat_id = seats.id
+	LEFT JOIN games ON tickets.game_id = games.id
+WHERE tickets.id = ?`, ti.Id)
+
 	return ti
 }
 

@@ -19,8 +19,8 @@ type IRegistry interface {
 	InsertTicket(*model.Ticket) (*model.Ticket, error)
 
 	Reset() error
-	Search(*model.Ticket, *model.User) ([]*model.Ticket, error)
-	Reserve(*model.Ticket, *model.User) (*model.Ticket, error)
+	Search(*model.Ticket) ([]*model.Ticket, error)
+	Reserve(*model.Ticket) (*model.Ticket, error)
 }
 
 type MySQL struct {
@@ -60,10 +60,33 @@ func (sql *MySQL) Reset() error {
 	return err
 }
 
-func (sqsl *MySQL) Search(_ *model.Ticket, _ *model.User) ([]*model.Ticket, error) {
-	panic("not implemented") // TODO: Implement
+func (sql *MySQL) Search(t *model.Ticket) ([]*model.Ticket, error) {
+	args := []any{t.Game.Date, t.Seat.Sec}
+	rows, err := sql.db.Queryx(`
+SELECT
+  tickets.id as "id", tickets.price as "price",
+	seats.id as "seat.id", seats.sec as "seat.sec", seats.col as "seat.col", seats.row as "seat.row",
+	games.id as "game.id", games.date as "game.date", games.time as "game.time"
+FROM tickets
+	LEFT JOIN seats ON tickets.seat_id = seats.id
+	LEFT JOIN games ON tickets.game_id = games.id
+	LEFT JOIN users ON tickets.user_id = users.id
+WHERE games.date = ? AND seats.sec = ?`, args...)
+	ts := []*model.Ticket{}
+	if err != nil {
+		return ts, err
+	}
+
+	for rows.Next() {
+		nt := &model.Ticket{}
+		if err := rows.StructScan(nt); err != nil {
+			return ts, err
+		}
+		ts = append(ts, nt)
+	}
+	return ts, err
 }
 
-func (sqsl *MySQL) Reserve(_ *model.Ticket, _ *model.User) (*model.Ticket, error) {
+func (sql *MySQL) Reserve(_ *model.Ticket) (*model.Ticket, error) {
 	panic("not implemented") // TODO: Implement
 }

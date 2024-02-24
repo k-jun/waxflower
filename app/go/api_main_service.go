@@ -12,22 +12,25 @@ package openapi
 
 import (
 	"context"
-	"net/http"
 	"errors"
+	"net/http"
+
+	"github.com/k-jun/waxflower/registry"
 )
 
 // MainAPIService is a service that implements the logic for the MainAPIServicer
 // This service should implement the business logic for every endpoint for the MainAPI API.
 // Include any external packages or services that will be required by this service.
 type MainAPIService struct {
+	db registry.IRegistry
 }
 
 // NewMainAPIService creates a default api service
-func NewMainAPIService() MainAPIServicer {
-	return &MainAPIService{}
+func NewMainAPIService(db registry.IRegistry) MainAPIServicer {
+	return &MainAPIService{db}
 }
 
-// ReservePut - 
+// ReservePut -
 func (s *MainAPIService) ReservePut(ctx context.Context, ticketReserve TicketReserve) (ImplResponse, error) {
 	// TODO - update ReservePut with the required logic for this service method.
 	// Add api_main_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
@@ -41,7 +44,7 @@ func (s *MainAPIService) ReservePut(ctx context.Context, ticketReserve TicketRes
 	return Response(http.StatusNotImplemented, nil), errors.New("ReservePut method not implemented")
 }
 
-// ResetGet - 
+// ResetGet -
 func (s *MainAPIService) ResetGet(ctx context.Context) (ImplResponse, error) {
 	// TODO - update ResetGet with the required logic for this service method.
 	// Add api_main_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
@@ -55,7 +58,7 @@ func (s *MainAPIService) ResetGet(ctx context.Context) (ImplResponse, error) {
 	return Response(http.StatusNotImplemented, nil), errors.New("ResetGet method not implemented")
 }
 
-// SearchGet - 
+// SearchGet -
 func (s *MainAPIService) SearchGet(ctx context.Context, date string, seq int32) (ImplResponse, error) {
 	// TODO - update SearchGet with the required logic for this service method.
 	// Add api_main_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
