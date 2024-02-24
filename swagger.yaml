@@ -43,7 +43,7 @@ paths:
             format: date
             example: 1999-07-10
         - in: query
-          name: seq
+          name: sec
           required: true
           schema:
             type: integer
