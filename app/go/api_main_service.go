@@ -12,8 +12,6 @@ package openapi
 
 import (
 	"context"
-	"errors"
-	"net/http"
 
 	"github.com/k-jun/waxflower/model"
 	"github.com/k-jun/waxflower/registry"
@@ -33,16 +31,12 @@ func NewMainAPIService(db registry.IRegistry) MainAPIServicer {
 
 // ReservePut -
 func (s *MainAPIService) ReservePut(ctx context.Context, ticketReserve TicketReserve) (ImplResponse, error) {
-	// TODO - update ReservePut with the required logic for this service method.
-	// Add api_main_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
-	// return Response(200, nil),nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("ReservePut method not implemented")
+	t := &model.Ticket{Id: ticketReserve.TicketId, User: &model.User{Id: ticketReserve.UserId}}
+	_, err := s.db.Reserve(t)
+	if err != nil {
+		return Response(400, nil), err
+	}
+	return Response(200, nil), err
 }
 
 // ResetGet -
