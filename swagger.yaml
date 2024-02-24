@@ -47,6 +47,9 @@ paths:
           required: true
           schema:
             type: integer
+            minimum: 1
+            maximum: 9
+            example: 7
       responses:
         200:
           $ref: "#/components/responses/200Tickets"

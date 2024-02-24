@@ -70,8 +70,7 @@ SELECT
 FROM tickets
 	LEFT JOIN seats ON tickets.seat_id = seats.id
 	LEFT JOIN games ON tickets.game_id = games.id
-	LEFT JOIN users ON tickets.user_id = users.id
-WHERE games.date = ? AND seats.sec = ?`, args...)
+WHERE games.date = ? AND seats.sec = ? AND tickets.user_id is NULL`, args...)
 	ts := []*model.Ticket{}
 	if err != nil {
 		return ts, err

@@ -13,6 +13,7 @@ package openapi
 import (
 	"context"
 
+	"github.com/jinzhu/copier"
 	"github.com/k-jun/waxflower/model"
 	"github.com/k-jun/waxflower/registry"
 )
@@ -51,7 +52,12 @@ func (s *MainAPIService) ResetGet(ctx context.Context) (ImplResponse, error) {
 // SearchGet -
 func (s *MainAPIService) SearchGet(ctx context.Context, date string, sec int32) (ImplResponse, error) {
 	t := &model.Ticket{Game: &model.Game{Date: date}, Seat: &model.Seat{Sec: sec}}
-	ts, err := s.db.Search(t)
+	mts, err := s.db.Search(t)
 
+	ts := &[]Ticket{}
+	if err != nil {
+		return Response(200, ts), err
+	}
+	err = copier.Copy(ts, mts)
 	return Response(200, ts), err
 }
