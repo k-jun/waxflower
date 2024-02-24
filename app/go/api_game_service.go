@@ -50,11 +50,11 @@ func (s *GameAPIService) GamesPost(ctx context.Context, game Game) (ImplResponse
 	mg := &model.Game{}
 	err := copier.Copy(mg, &game)
 	if err != nil {
-		return Response(400, err), nil
+		return Response(400, nil), err
 	}
 	_, err = s.db.InsertGame(mg)
 	if err != nil {
-		return Response(400, err), nil
+		return Response(400, nil), err
 	}
-	return Response(200, err), nil
+	return Response(200, nil), err
 }

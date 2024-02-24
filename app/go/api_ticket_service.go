@@ -35,13 +35,13 @@ func (s *TicketAPIService) TicketsPost(ctx context.Context, ticket Ticket) (Impl
 	mt := model.Ticket{}
 	err := copier.Copy(&mt, &ticket)
 	if err != nil {
-		return Response(400, err), nil
+		return Response(400, nil), err
 	}
 	_, err = s.db.InsertTicket(&mt)
 	if err != nil {
-		return Response(400, err), nil
+		return Response(400, nil), err
 	}
-	return Response(200, err), nil
+	return Response(200, nil), err
 }
 
 // TicketsTicketIdGet -
@@ -49,12 +49,12 @@ func (s *TicketAPIService) TicketsTicketIdGet(ctx context.Context, ticketId stri
 	mt := &model.Ticket{Id: ticketId}
 	mt, err := s.db.SelectTicket(mt)
 	if err != nil {
-		return Response(400, err), nil
+		return Response(400, nil), err
 	}
 	t := &Ticket{}
 	err = copier.Copy(t, mt)
 	if err != nil {
-		return Response(400, err), nil
+		return Response(400, nil), err
 	}
-	return Response(200, t), nil
+	return Response(200, nil), err
 }

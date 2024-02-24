@@ -35,13 +35,13 @@ func (s *SeatAPIService) SeatsPost(ctx context.Context, seat Seat) (ImplResponse
 	ms := model.Seat{}
 	err := copier.Copy(&ms, &seat)
 	if err != nil {
-		return Response(400, err), nil
+		return Response(400, nil), err
 	}
 	_, err = s.db.InsertSeat(&ms)
 	if err != nil {
-		return Response(400, err), nil
+		return Response(400, nil), err
 	}
-	return Response(200, err), nil
+	return Response(200, nil), err
 }
 
 // SeatsSeatIdGet -
@@ -49,12 +49,12 @@ func (s *SeatAPIService) SeatsSeatIdGet(ctx context.Context, seatId string) (Imp
 	ms := &model.Seat{Id: seatId}
 	ms, err := s.db.SelectSeat(ms)
 	if err != nil {
-		return Response(400, err), nil
+		return Response(400, nil), err
 	}
 	se := &Seat{}
 	err = copier.Copy(se, ms)
 	if err != nil {
-		return Response(400, err), nil
+		return Response(400, nil), err
 	}
-	return Response(200, se), nil
+	return Response(200, se), err
 }

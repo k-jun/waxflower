@@ -14,13 +14,11 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
-
-	"github.com/gorilla/mux"
 )
 
 // MainAPIController binds http requests to an api service and writes the service results to the http response
 type MainAPIController struct {
-	service MainAPIServicer
+	service      MainAPIServicer
 	errorHandler ErrorHandler
 }
 
@@ -69,7 +67,7 @@ func (c *MainAPIController) Routes() Routes {
 	}
 }
 
-// ReservePut - 
+// ReservePut -
 func (c *MainAPIController) ReservePut(w http.ResponseWriter, r *http.Request) {
 	ticketReserveParam := TicketReserve{}
 	d := json.NewDecoder(r.Body)
@@ -96,7 +94,7 @@ func (c *MainAPIController) ReservePut(w http.ResponseWriter, r *http.Request) {
 	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
-// ResetGet - 
+// ResetGet -
 func (c *MainAPIController) ResetGet(w http.ResponseWriter, r *http.Request) {
 	result, err := c.service.ResetGet(r.Context())
 	// If an error occurred, encode the error with the status code
@@ -108,7 +106,7 @@ func (c *MainAPIController) ResetGet(w http.ResponseWriter, r *http.Request) {
 	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
-// SearchGet - 
+// SearchGet -
 func (c *MainAPIController) SearchGet(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	var dateParam string

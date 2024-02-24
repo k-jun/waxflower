@@ -35,13 +35,13 @@ func (s *UserAPIService) UsersPost(ctx context.Context, user User) (ImplResponse
 	mu := model.User{}
 	err := copier.Copy(&mu, &user)
 	if err != nil {
-		return Response(400, err), nil
+		return Response(400, nil), err
 	}
 	_, err = s.db.InsertUser(&mu)
 	if err != nil {
-		return Response(400, err), nil
+		return Response(400, nil), err
 	}
-	return Response(200, err), nil
+	return Response(200, nil), err
 }
 
 // UsersUserIdGet -
@@ -49,12 +49,12 @@ func (s *UserAPIService) UsersUserIdGet(ctx context.Context, userId string) (Imp
 	mu := &model.User{Id: userId}
 	mu, err := s.db.SelectUser(mu)
 	if err != nil {
-		return Response(400, err), nil
+		return Response(400, nil), err
 	}
 	u := &User{}
 	err = copier.Copy(u, mu)
 	if err != nil {
-		return Response(400, err), nil
+		return Response(400, nil), err
 	}
-	return Response(200, u), nil
+	return Response(200, u), err
 }
