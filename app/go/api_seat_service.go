@@ -12,8 +12,6 @@ package openapi
 
 import (
 	"context"
-	"errors"
-	"net/http"
 
 	"github.com/jinzhu/copier"
 	"github.com/k-jun/waxflower/model"
@@ -46,20 +44,6 @@ func (s *SeatAPIService) SeatsPost(ctx context.Context, seat Seat) (ImplResponse
 	return Response(200, err), nil
 }
 
-// SeatsSeatIdDelete -
-func (s *SeatAPIService) SeatsSeatIdDelete(ctx context.Context, seatId string) (ImplResponse, error) {
-	// TODO - update SeatsSeatIdDelete with the required logic for this service method.
-	// Add api_seat_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
-	// return Response(200, nil),nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("SeatsSeatIdDelete method not implemented")
-}
-
 // SeatsSeatIdGet -
 func (s *SeatAPIService) SeatsSeatIdGet(ctx context.Context, seatId string) (ImplResponse, error) {
 	ms := &model.Seat{Id: seatId}
@@ -73,18 +57,4 @@ func (s *SeatAPIService) SeatsSeatIdGet(ctx context.Context, seatId string) (Imp
 		return Response(400, err), nil
 	}
 	return Response(200, se), nil
-}
-
-// SeatsSeatIdPut -
-func (s *SeatAPIService) SeatsSeatIdPut(ctx context.Context, seatId string, seat Seat) (ImplResponse, error) {
-	// TODO - update SeatsSeatIdPut with the required logic for this service method.
-	// Add api_seat_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, Seat{}) or use other options such as http.Ok ...
-	// return Response(200, Seat{}), nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("SeatsSeatIdPut method not implemented")
 }

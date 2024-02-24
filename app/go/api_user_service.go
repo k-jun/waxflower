@@ -12,8 +12,6 @@ package openapi
 
 import (
 	"context"
-	"errors"
-	"net/http"
 
 	"github.com/jinzhu/copier"
 	"github.com/k-jun/waxflower/model"
@@ -46,20 +44,6 @@ func (s *UserAPIService) UsersPost(ctx context.Context, user User) (ImplResponse
 	return Response(200, err), nil
 }
 
-// UsersUserIdDelete -
-func (s *UserAPIService) UsersUserIdDelete(ctx context.Context, userId string) (ImplResponse, error) {
-	// TODO - update UsersUserIdDelete with the required logic for this service method.
-	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
-	// return Response(200, nil),nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("UsersUserIdDelete method not implemented")
-}
-
 // UsersUserIdGet -
 func (s *UserAPIService) UsersUserIdGet(ctx context.Context, userId string) (ImplResponse, error) {
 	mu := &model.User{Id: userId}
@@ -73,18 +57,4 @@ func (s *UserAPIService) UsersUserIdGet(ctx context.Context, userId string) (Imp
 		return Response(400, err), nil
 	}
 	return Response(200, u), nil
-}
-
-// UsersUserIdPut -
-func (s *UserAPIService) UsersUserIdPut(ctx context.Context, userId string, user User) (ImplResponse, error) {
-	// TODO - update UsersUserIdPut with the required logic for this service method.
-	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
-	// return Response(200, nil),nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("UsersUserIdPut method not implemented")
 }

@@ -12,8 +12,6 @@ package openapi
 
 import (
 	"context"
-	"errors"
-	"net/http"
 
 	"github.com/jinzhu/copier"
 	"github.com/k-jun/waxflower/model"
@@ -46,20 +44,6 @@ func (s *TicketAPIService) TicketsPost(ctx context.Context, ticket Ticket) (Impl
 	return Response(200, err), nil
 }
 
-// TicketsTicketIdDelete -
-func (s *TicketAPIService) TicketsTicketIdDelete(ctx context.Context, ticketId string) (ImplResponse, error) {
-	// TODO - update TicketsTicketIdDelete with the required logic for this service method.
-	// Add api_ticket_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, {}) or use other options such as http.Ok ...
-	// return Response(200, nil),nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("TicketsTicketIdDelete method not implemented")
-}
-
 // TicketsTicketIdGet -
 func (s *TicketAPIService) TicketsTicketIdGet(ctx context.Context, ticketId string) (ImplResponse, error) {
 	mt := &model.Ticket{Id: ticketId}
@@ -73,18 +57,4 @@ func (s *TicketAPIService) TicketsTicketIdGet(ctx context.Context, ticketId stri
 		return Response(400, err), nil
 	}
 	return Response(200, t), nil
-}
-
-// TicketsTicketIdPut -
-func (s *TicketAPIService) TicketsTicketIdPut(ctx context.Context, ticketId string, ticket Ticket) (ImplResponse, error) {
-	// TODO - update TicketsTicketIdPut with the required logic for this service method.
-	// Add api_ticket_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, Ticket{}) or use other options such as http.Ok ...
-	// return Response(200, Ticket{}), nil
-
-	// TODO: Uncomment the next line to return response Response(400, {}) or use other options such as http.Ok ...
-	// return Response(400, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("TicketsTicketIdPut method not implemented")
 }
