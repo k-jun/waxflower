@@ -87,6 +87,9 @@ WHERE games.date = ? AND seats.sec = ?`, args...)
 	return ts, err
 }
 
-func (sql *MySQL) Reserve(_ *model.Ticket) (*model.Ticket, error) {
-	panic("not implemented") // TODO: Implement
+func (sql *MySQL) Reserve(t *model.Ticket) (*model.Ticket, error) {
+	_, err := sql.db.Exec("UPDATE tickets SET user_id = ? WHERE id = ?",
+		t.User.Id, t.Id,
+	)
+	return t, err
 }

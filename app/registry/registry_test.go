@@ -32,9 +32,6 @@ func TestMySQL_Reset(t *testing.T) {
 	type fields struct {
 		db *sqlx.DB
 		t  *model.Ticket
-		g  *model.Game
-		s  *model.Seat
-		u  *model.User
 	}
 	tests := []struct {
 		name    string
@@ -192,6 +189,119 @@ func TestMySQL_Search(t *testing.T) {
 			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("MySQL.Search() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestMySQL_Reserve(t *testing.T) {
+	t.Cleanup(func() {
+		util.DeleteAll(db)
+	})
+	type fields struct {
+		db *sqlx.DB
+		t  *model.Ticket
+	}
+	type args struct {
+		t *model.Ticket
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		want    *model.Ticket
+		wantErr bool
+	}{
+		{
+			name: "OK: Reserve",
+			fields: fields{
+				db: db,
+				t: &model.Ticket{
+					Id:    "c3352915-b1f5-4723-b2ab-3f30ec345d84",
+					Price: 3000,
+					Seat: &model.Seat{
+						Id:  "f43af2dc-3af0-4967-a5fb-cc175b501f72",
+						Row: "XX",
+						Sec: 3,
+						Col: 3,
+					},
+					Game: &model.Game{
+						Id:   "de41e19c-6b9d-47b5-ab4a-77bc86fe497a",
+						Date: "2000-09-04",
+						Time: "03:34:12",
+					},
+					User: &model.User{
+						Id:    "4bc099c8-5a89-4021-acdc-77f3206cc2f3",
+						Email: "qjimenez@example.com",
+					},
+				},
+			},
+			args: args{
+				t: &model.Ticket{
+					Id:   "c3352915-b1f5-4723-b2ab-3f30ec345d84",
+					User: &model.User{Id: "4bc099c8-5a89-4021-acdc-77f3206cc2f3"},
+				},
+			},
+			want: &model.Ticket{
+				Id:   "c3352915-b1f5-4723-b2ab-3f30ec345d84",
+				User: &model.User{Id: "4bc099c8-5a89-4021-acdc-77f3206cc2f3"},
+			},
+		},
+		{
+			name: "NG: Reserve",
+			fields: fields{
+				db: db,
+				t: &model.Ticket{
+					Id:    "32c70594-67d0-4068-a8bf-7a440c9574e8",
+					Price: 5000,
+					Seat: &model.Seat{
+						Id:  "7b4dbab3-9d56-4fc0-9aa0-2fecd5b40c80",
+						Row: "XY",
+						Sec: 2,
+						Col: 69,
+					},
+					Game: &model.Game{
+						Id:   "b5e30713-8e13-4199-a8ce-e1d2b98fa2f0",
+						Date: "2020-08-31",
+						Time: "16:32:05",
+					},
+					User: &model.User{
+						Id:    "548cd8e1-7d60-4f73-be17-0b75f7bdc669",
+						Email: "cooperandrea@example.net",
+					},
+				},
+			},
+			args: args{
+				t: &model.Ticket{
+					Id:   "32c70594-67d0-4068-a8bf-7a440c9574e8",
+					User: &model.User{Id: "5119c911-90da-4cf8-9446-d229bdc66082"},
+				},
+			},
+			want: &model.Ticket{
+				Id:   "32c70594-67d0-4068-a8bf-7a440c9574e8",
+				User: &model.User{Id: "5119c911-90da-4cf8-9446-d229bdc66082"},
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			sql := &MySQL{
+				db: tt.fields.db,
+			}
+
+			_ = util.InsertGame(t, db, tt.fields.t.Game)
+			_ = util.InsertSeat(t, db, tt.fields.t.Seat)
+			_ = util.InsertUser(t, db, tt.fields.t.User)
+			_ = util.InsertTicket(t, db, tt.fields.t)
+
+			got, err := sql.Reserve(tt.args.t)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("MySQL.Reserve() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("MySQL.Reserve() = %v, want %v", got, tt.want)
 			}
 		})
 	}
